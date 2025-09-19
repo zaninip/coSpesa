@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <title>CoSpesa · Dashboard</title>
+    <script>
+      tailwind = {
+        config: {
+          theme: { extend: { colors: { brand: "#ffd54a", bg: "#0a0a0a" } } },
+        },
+      };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="bg-[var(--bg)] text-white">
+    <header class="border-b border-[#1f1f1f]">
+      <div class="container flex items-center justify-between py-4">
+        <div class="flex items-center gap-3">
+          <img src="assets/logo.svg" class="h-9" alt="CoSpesa" />
+          <span class="badge">Dashboard</span>
+        </div>
+        <nav class="flex items-center gap-3">
+          <button
+            id="go-history"
+            class="btn btn-secondary flex items-center gap-2"
+          >
+            <i data-lucide="bar-chart-3" class="w-5 h-5"></i> Storico
+          </button>
+          <button id="logout" class="btn btn-danger flex items-center gap-2">
+            <i data-lucide="log-out" class="w-5 h-5"></i> Esci
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="grid md:grid-cols-2 gap-4 mb-4">
+        <button
+          id="open-create-modal"
+          class="card p-5 text-left hover:translate-y-[-2px] transition flex items-center justify-between"
+        >
+          <div>
+            <h2 class="text-xl font-bold">Nuova spesa</h2>
+            <p class="muted">
+              Crea una lista e ottieni un codice condivisibile
+            </p>
+          </div>
+          <div class="btn btn-primary">
+            <i data-lucide="plus" class="w-5 h-5"></i>
+          </div>
+        </button>
+
+        <button
+          id="open-join-modal"
+          class="card p-5 text-left hover:translate-y-[-2px] transition flex items-center justify-between"
+        >
+          <div>
+            <h2 class="text-xl font-bold">Unisciti con codice</h2>
+            <p class="muted">Accedi a una spesa esistente</p>
+          </div>
+          <div class="btn btn-secondary">
+            <i data-lucide="key-round" class="w-5 h-5"></i>
+          </div>
+        </button>
+      </section>
+
+      <section class="card p-5 fade-in">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-xl font-bold">Le tue spese</h2>
+        </div>
+        <ul id="shopping-list" class="space-y-3"></ul>
+      </section>
+    </main>
+
+    <!-- MODAL CREAZIONE SPESA -->
+    <div
+      id="create-modal"
+      class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50"
+    >
+      <div
+        class="card p-6 w-full max-w-md transform scale-95 opacity-0 transition-all"
+        id="create-content"
+      >
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-bold flex items-center gap-2">
+            <i data-lucide="plus" class="w-5 h-5 text-[var(--brand)]"></i> Nuova
+            spesa
+          </h2>
+          <button id="close-create" class="text-gray-400 hover:text-white">
+            <i data-lucide="x" class="w-6 h-6"></i>
+          </button>
+        </div>
+        <p class="muted mb-4">Inserisci il nome della spesa da creare.</p>
+        <input
+          type="text"
+          id="create-title"
+          class="input w-full mb-4"
+          placeholder="Es. Spesa settimanale"
+        />
+        <div class="flex justify-end gap-3">
+          <button id="cancel-create" class="btn btn-secondary">Annulla</button>
+          <button id="confirm-create" class="btn btn-primary">Crea</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL JOIN SPESA -->
+    <div
+      id="join-modal"
+      class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50"
+    >
+      <div
+        class="card p-6 w-full max-w-md transform scale-95 opacity-0 transition-all"
+        id="join-content"
+      >
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-bold flex items-center gap-2">
+            <i data-lucide="key-round" class="w-5 h-5 text-[var(--brand)]"></i>
+            Inserisci codice spesa
+          </h2>
+          <button id="close-join" class="text-gray-400 hover:text-white">
+            <i data-lucide="x" class="w-6 h-6"></i>
+          </button>
+        </div>
+        <p class="muted mb-4">
+          Inserisci il codice unico della spesa a cui vuoi unirti.
+        </p>
+        <input
+          type="text"
+          id="join-code"
+          class="input w-full mb-4 uppercase"
+          placeholder="CODICE"
+          maxlength="8"
+        />
+        <div class="flex justify-end gap-3">
+          <button id="cancel-join" class="btn btn-secondary">Annulla</button>
+          <button id="confirm-join" class="btn btn-primary">Unisciti</button>
+        </div>
+      </div>
+    </div>
+
+    <template id="tpl-list-item">
+      <li class="li flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <i data-lucide="shopping-bag" class="w-5 h-5 text-[var(--brand)]"></i>
+          <span class="title"></span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="open btn btn-primary flex items-center gap-2">
+            <i data-lucide="arrow-right" class="w-4 h-4"></i> Apri
+          </button>
+          <button class="code btn btn-secondary">Codice</button>
+          <button class="hide btn btn-danger">Nascondi</button>
+        </div>
+      </li>
+    </template>
+
+    <script type="module">
+      import { supabase, requireAuth } from "./app.js";
+      let user = null;
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        lucide.createIcons();
+        user = await requireAuth();
+        await loadShoppingLists();
+
+        // logout e storico
+        document
+          .getElementById("logout")
+          .addEventListener("click", async () => {
+            await supabase.auth.signOut();
+            window.location.href = "login.html";
+          });
+        document
+          .getElementById("go-history")
+          .addEventListener(
+            "click",
+            () => (window.location.href = "history.html"),
+          );
+
+        // modali open/close
+        const createModal = document.getElementById("create-modal");
+        const createContent = document.getElementById("create-content");
+        document
+          .getElementById("open-create-modal")
+          .addEventListener("click", () => {
+            createModal.classList.remove("hidden");
+            setTimeout(
+              () => createContent.classList.remove("scale-95", "opacity-0"),
+              10,
+            );
+          });
+        document
+          .getElementById("close-create")
+          .addEventListener("click", closeCreate);
+        document
+          .getElementById("cancel-create")
+          .addEventListener("click", closeCreate);
+        function closeCreate() {
+          createContent.classList.add("scale-95", "opacity-0");
+          setTimeout(() => createModal.classList.add("hidden"), 150);
+        }
+
+        const joinModal = document.getElementById("join-modal");
+        const joinContent = document.getElementById("join-content");
+        document
+          .getElementById("open-join-modal")
+          .addEventListener("click", () => {
+            joinModal.classList.remove("hidden");
+            setTimeout(
+              () => joinContent.classList.remove("scale-95", "opacity-0"),
+              10,
+            );
+          });
+        document
+          .getElementById("close-join")
+          .addEventListener("click", closeJoin);
+        document
+          .getElementById("cancel-join")
+          .addEventListener("click", closeJoin);
+        function closeJoin() {
+          joinContent.classList.add("scale-95", "opacity-0");
+          setTimeout(() => joinModal.classList.add("hidden"), 150);
+        }
+
+        // conferma crea
+        document
+          .getElementById("confirm-create")
+          .addEventListener("click", async () => {
+            const title = document.getElementById("create-title").value.trim();
+            if (!title) return alert("Inserisci un nome valido");
+            const code = Math.random()
+              .toString(36)
+              .substring(2, 8)
+              .toUpperCase();
+            const { data, error } = await supabase
+              .from("shopping_lists")
+              .insert([{ title, code, owner_id: user.id }])
+              .select()
+              .single();
+            if (error) return alert("Errore creazione: " + error.message);
+            await supabase
+              .from("shopping_participants")
+              .insert([{ shopping_id: data.id, user_id: user.id }]);
+            alert(`Spesa creata! Codice: ${data.code}`);
+            closeCreate();
+            loadShoppingLists();
+          });
+
+        // conferma join
+        document
+          .getElementById("confirm-join")
+          .addEventListener("click", async () => {
+            const code = document
+              .getElementById("join-code")
+              .value.trim()
+              .toUpperCase();
+            if (!code) return alert("Inserisci un codice valido");
+            const { data: list, error } = await supabase
+              .from("shopping_lists")
+              .select("id")
+              .eq("code", code)
+              .single();
+            if (error || !list) return alert("Codice non valido.");
+            const { error: jerr } = await supabase
+              .from("shopping_participants")
+              .insert([{ shopping_id: list.id, user_id: user.id }]);
+            if (jerr && !String(jerr.message).includes("duplicate"))
+              return alert("Errore unione: " + jerr.message);
+            closeJoin();
+            loadShoppingLists();
+          });
+      });
+
+      async function loadShoppingLists() {
+        const ul = document.getElementById("shopping-list");
+        ul.innerHTML = "";
+        const { data, error } = await supabase
+          .from("shopping_participants")
+          .select("shopping_lists(id, title, code)")
+          .eq("user_id", user.id);
+
+        if (error) {
+          ul.innerHTML = `<li class="muted">Errore caricamento.</li>`;
+          return;
+        }
+        if (!data || !data.length) {
+          ul.innerHTML = `<li class="muted">Nessuna spesa ancora creata o unita</li>`;
+          return;
+        }
+
+        const tpl = document.getElementById("tpl-list-item");
+        data.forEach((row) => {
+          const list = row.shopping_lists;
+          const li = tpl.content.cloneNode(true);
+          li.querySelector(".title").textContent = list.title;
+          li.querySelector(".open").addEventListener(
+            "click",
+            () => (window.location.href = `shopping.html?id=${list.id}`),
+          );
+          li.querySelector(".code").addEventListener("click", () =>
+            alert(`Codice: ${list.code}`),
+          );
+          li.querySelector(".hide").addEventListener("click", async () => {
+            await supabase
+              .from("shopping_participants")
+              .delete()
+              .eq("shopping_id", list.id)
+              .eq("user_id", user.id);
+            loadShoppingLists();
+          });
+          ul.appendChild(li);
+        });
+        lucide.createIcons();
+      }
+    </script>
+  </body>
+</html>

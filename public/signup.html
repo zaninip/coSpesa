@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <title>CoSpesa · Registrazione</title>
+    <script>
+      tailwind = {
+        config: {
+          theme: { extend: { colors: { brand: "#ffd54a", bg: "#0a0a0a" } } },
+        },
+      };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="bg-[var(--bg)] text-white">
+    <div class="container">
+      <div class="flex justify-center mb-10 fade-in">
+        <img src="assets/logo.svg" alt="CoSpesa" class="h-12 glow-once" />
+      </div>
+
+      <div class="max-w-md mx-auto card p-6 fade-in">
+        <h1 class="text-3xl font-extrabold mb-2">Crea account</h1>
+        <p class="muted mb-6">Entra in CoSpesa e condividi la tua lista.</p>
+
+        <div class="space-y-3">
+          <label class="block text-sm muted">Email</label>
+          <div class="relative">
+            <i
+              data-lucide="mail"
+              class="w-5 h-5 absolute left-3 top-3 text-[var(--muted)]"
+            ></i>
+            <input
+              id="email"
+              type="email"
+              class="input pl-10 w-full"
+              placeholder="nome@esempio.com"
+            />
+          </div>
+
+          <label class="block text-sm muted mt-3">Password</label>
+          <div class="relative">
+            <i
+              data-lucide="lock"
+              class="w-5 h-5 absolute left-3 top-3 text-[var(--muted)]"
+            ></i>
+            <input
+              id="password"
+              type="password"
+              class="input pl-10 w-full"
+              placeholder="••••••••"
+            />
+          </div>
+
+          <button id="signup" class="btn btn-primary w-full mt-5">
+            Registrati
+          </button>
+        </div>
+
+        <div class="hr"></div>
+        <p class="text-sm">
+          Hai già un account?
+          <a
+            href="login.html"
+            class="text-[var(--brand)] hover:underline font-semibold"
+            >Accedi</a
+          >
+        </p>
+      </div>
+    </div>
+
+    <script type="module">
+      import { supabase } from "./app.js";
+      lucide.createIcons();
+
+      document.getElementById("signup").addEventListener("click", async () => {
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        const { error } = await supabase.auth.signUp({ email, password });
+        if (error) alert("Errore registrazione: " + error.message);
+        else {
+          alert("Registrazione effettuata! Ora effettua il login.");
+          window.location.href = "login.html";
+        }
+      });
+    </script>
+  </body>
+</html>

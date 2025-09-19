@@ -1,0 +1,8 @@
+<svg width="160" height="48" viewBox="0 0 160 48" xmlns="http://www.w3.org/2000/svg">
+  <rect width="160" height="48" rx="12" fill="#0a0a0a"></rect>
+  <g transform="translate(12,10)">
+    <rect x="0" y="0" width="28" height="28" rx="8" fill="#ffd54a"></rect>
+    <path d="M6 9h16l-2 10H8L6 9zm3 13a2 2 0 110 4 2 2 0 010-4zm10 0a2 2 0 110 4 2 2 0 010-4z" fill="#111"></path>
+  </g>
+  <text x="52" y="31" font-family="Inter,Segoe UI,Arial" font-weight="800" font-size="22" fill="#ffd54a">CoSpesa</text>
+</svg>

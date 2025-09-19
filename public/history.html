@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <title>CoSpesa · Storico</title>
+    <script>
+      tailwind = {
+        config: {
+          theme: { extend: { colors: { brand: "#ffd54a", bg: "#0a0a0a" } } },
+        },
+      };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="bg-[var(--bg)] text-white">
+    <header class="border-b border-[#1f1f1f]">
+      <div class="container flex items-center justify-between py-4">
+        <div class="flex items-center gap-3">
+          <a href="dashboard.html"
+            ><img src="assets/logo.svg" class="h-9" alt="CoSpesa"
+          /></a>
+          <span class="badge">Storico</span>
+        </div>
+        <a
+          href="dashboard.html"
+          class="btn btn-secondary flex items-center gap-2"
+          ><i data-lucide="arrow-left" class="w-5 h-5"></i> Dashboard</a
+        >
+      </div>
+    </header>
+
+    <main class="container space-y-5">
+      <section class="card p-5 fade-in">
+        <h1 class="text-2xl font-extrabold mb-1">Storico prodotti</h1>
+        <p class="muted">Quante volte hai comprato ciascun prodotto.</p>
+
+        <div class="overflow-x-auto mt-4">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Prodotto</th>
+                <th>Volte comprato</th>
+                <th>Ultima volta</th>
+              </tr>
+            </thead>
+            <tbody id="history-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script type="module">
+      import { supabase, requireAuth } from "./app.js";
+      let user = null;
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        lucide.createIcons();
+        user = await requireAuth();
+        await loadHistory();
+      });
+
+      async function loadHistory() {
+        const tb = document.getElementById("history-body");
+        tb.innerHTML = "";
+        const { data, error } = await supabase
+          .from("products_history")
+          .select("name, total_count, last_bought_at")
+          .eq("user_id", user.id)
+          .order("total_count", { ascending: false });
+
+        if (error) {
+          tb.innerHTML = `<tr><td colspan="3" class="muted">Errore</td></tr>`;
+          return;
+        }
+        if (!data || !data.length) {
+          tb.innerHTML = `<tr><td colspan="3" class="muted">Nessun prodotto ancora.</td></tr>`;
+          return;
+        }
+
+        data.forEach((r) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+          <td>${r.name}</td>
+          <td>${r.total_count}</td>
+          <td>${r.last_bought_at ? new Date(r.last_bought_at).toLocaleDateString("it-IT") : "-"}</td>
+        `;
+          tb.appendChild(tr);
+        });
+      }
+    </script>
+  </body>
+</html>
