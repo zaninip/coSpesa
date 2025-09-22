@@ -152,12 +152,16 @@
           <i data-lucide="shopping-bag" class="w-5 h-5 text-[var(--brand)]"></i>
           <span class="title"></span>
         </div>
-        <div class="flex items-center gap-2">
-          <button class="open btn btn-primary flex items-center gap-2">
+        <div class="flex flex-wrap sm:flex-nowrap gap-2">
+          <button class="open btn btn-primary px-2 py-1 text-sm sm:px-3 sm:py-2 sm:text-base flex items-center gap-1">
             <i data-lucide="arrow-right" class="w-4 h-4"></i> Apri
           </button>
-          <button class="code btn btn-secondary">Codice</button>
-          <button class="hide btn btn-danger">Nascondi</button>
+          <button class="code btn btn-secondary px-2 py-1 text-sm sm:px-3 sm:py-2 sm:text-base flex items-center gap-1">
+            <i data-lucide="key-round" class="w-4 h-4"></i> Codice
+          </button>
+          <button class="hide btn btn-danger px-2 py-1 text-sm sm:px-3 sm:py-2 sm:text-base flex items-center gap-1">
+            <i data-lucide="eye-off" class="w-4 h-4"></i> Nascondi
+          </button>
         </div>
       </li>
     </template>
