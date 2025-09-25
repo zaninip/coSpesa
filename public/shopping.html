@@ -103,10 +103,10 @@
 
         <!-- Colonna pulsanti con larghezza fissa -->
         <div class="ml-auto w-40 sm:w-52 md:w-60 flex flex-wrap sm:flex-nowrap justify-end gap-2">
-          <button class="buy btn btn-primary px-2 py-1 text-sm sm:px-3 sm:py-2 sm:text-base flex items-center gap-1">
+          <button type="button" class="buy btn btn-primary px-2 py-1 text-sm sm:px-3 sm:py-2 sm:text-base flex items-center gap-1">
             <i data-lucide="check" class="w-4 h-4"></i> Comprato
           </button>
-          <button class="remove btn btn-danger px-2 py-1 text-sm sm:px-3 sm:py-2 sm:text-base flex items-center gap-1">
+          <button type="button" class="remove btn btn-danger px-2 py-1 text-sm sm:px-3 sm:py-2 sm:text-base flex items-center gap-1">
             <i data-lucide="x" class="w-4 h-4"></i> Eliminato
           </button>
         </div>
@@ -191,10 +191,10 @@
             li.querySelector(".buy").disabled = true;
           }
           li.querySelector(".buy").addEventListener("click", () =>
-            handleProductBought(p.id),
+            handleProductBought(p.id, li)
           );
           li.querySelector(".remove").addEventListener("click", () =>
-            handleProductRemoved(p.id),
+            handleProductRemoved(p.id, li)
           );
           ul.appendChild(li);
         });
@@ -244,25 +244,39 @@
         }
       }
 
-      async function handleProductBought(productId) {
+      async function handleProductBought(productId, liEl) {
         const { error } = await supabase.rpc("increment_product_count", {
           pid: productId,
           uid: user.id,
         });
-        if (error) alert("Errore: " + error.message);
-        else {
-          loadProducts();
+        if (error) {
+          alert("Errore: " + error.message);
+        } else {
+          // segna come comprato
+          const nameEl = liEl.querySelector(".name");
+          nameEl.classList.add("line-through");
+          // animazione fade-out
+          setTimeout(() => {
+            liEl.classList.add("fade-out");
+            setTimeout(() => liEl.remove(), 500);
+          }, 400);
+          // aggiorna lo storico
           loadHistoryProducts();
         }
       }
 
-      async function handleProductRemoved(productId) {
+      async function handleProductRemoved(productId, liEl) {
         const { error } = await supabase
           .from("shopping_products")
           .delete()
           .eq("id", productId);
-        if (error) alert("Errore: " + error.message);
-        else loadProducts();
+        if (error) {
+          alert("Errore: " + error.message);
+        } else {
+          // animazione fade-out immediata
+          liEl.classList.add("fade-out");
+          setTimeout(() => liEl.remove(), 500);
+        }
       }
 
       // Tooltip mobile: tap per aprire/chiudere, tap fuori per chiudere

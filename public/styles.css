@@ -159,3 +159,19 @@ body{
 
 /* Mostra tooltip su mobile quando attivo via JS */
 .has-tooltip.show-tip::after { opacity: 1; }
+
+/* Animazioni per i prodotti */
+.li {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Stato comprato: barrato + grigio */
+.li .name.line-through {
+  color: #9ca3af; /* Tailwind text-gray-400 */
+}
+
+/* Fade-out (per eliminazione) */
+.li.fade-out {
+  opacity: 0;
+  transform: translateX(20px);
+}
