@@ -208,7 +208,7 @@
         const { data, error } = await supabase
           .from("products_history")
           .select("name, total_count")
-          .eq("user_id", user.id)
+          .eq("shopping_id", shoppingId)
           .order("total_count", { ascending: false });
         if (error) return;
         data.forEach((p) => {
@@ -248,7 +248,7 @@
       async function handleProductBought(productId, liEl) {
         const { error } = await supabase.rpc("increment_product_count", {
           pid: productId,
-          uid: user.id,
+          sid: shoppingId,
         });
 
         if (error) {
