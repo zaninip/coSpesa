@@ -168,6 +168,7 @@ body{
 /* Stato comprato: barrato + grigio */
 .li .name.line-through {
   color: #9ca3af; /* Tailwind text-gray-400 */
+  text-decoration: line-through;
 }
 
 /* Fade-out (per eliminazione) */

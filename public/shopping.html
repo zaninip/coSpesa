@@ -179,15 +179,15 @@
         }
         const tpl = document.getElementById("tpl-product");
         data.forEach((p) => {
-          const li = tpl.content.cloneNode(true);
+          // clona il contenuto del template
+          const fragment = tpl.content.cloneNode(true);
+          // recupera il vero <li> dal fragment
+          const li = fragment.querySelector("li");
           const nWrap = li.querySelector(".name");
-          nWrap.dataset.full = p.name;                                  // testo completo per tooltip
-          nWrap.querySelector(".clip").textContent = p.name;            // testo visibile troncato
+          nWrap.dataset.full = p.name;
+          nWrap.querySelector(".clip").textContent = p.name;
           if (p.bought) {
-            li.querySelector(".name").classList.add(
-              "line-through",
-              "text-gray-400",
-            );
+            li.querySelector(".name").classList.add("line-through", "text-gray-400");
             li.querySelector(".buy").disabled = true;
           }
           li.querySelector(".buy").addEventListener("click", () =>
@@ -196,6 +196,7 @@
           li.querySelector(".remove").addEventListener("click", () =>
             handleProductRemoved(p.id, li)
           );
+          // aggiunge il <li> alla lista
           ul.appendChild(li);
         });
         lucide.createIcons();
@@ -249,18 +250,21 @@
           pid: productId,
           uid: user.id,
         });
+
         if (error) {
           alert("Errore: " + error.message);
         } else {
-          // segna come comprato
+          // segna visivamente come comprato
           const nameEl = liEl.querySelector(".name");
-          nameEl.classList.add("line-through");
-          // animazione fade-out
+          nameEl.classList.add("line-through", "text-gray-400");
+
+          // fade-out e rimozione
           setTimeout(() => {
             liEl.classList.add("fade-out");
             setTimeout(() => liEl.remove(), 500);
           }, 400);
-          // aggiorna lo storico
+
+          // aggiorna lo storico (non serve ricaricare tutta la lista)
           loadHistoryProducts();
         }
       }
@@ -270,10 +274,11 @@
           .from("shopping_products")
           .delete()
           .eq("id", productId);
+
         if (error) {
           alert("Errore: " + error.message);
         } else {
-          // animazione fade-out immediata
+          // fade-out immediato e rimozione
           liEl.classList.add("fade-out");
           setTimeout(() => liEl.remove(), 500);
         }
