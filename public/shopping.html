@@ -224,7 +224,7 @@
         if (!name) return;
         const { error } = await supabase
           .from("shopping_products")
-          .insert([{ shopping_id: shoppingId, name, count: 0 }]);
+          .insert([{ shopping_id: shoppingId, name }]);
         if (error) alert("Errore: " + error.message);
         else {
           document.getElementById("new-product").value = "";
@@ -237,7 +237,7 @@
         if (!name) return;
         const { error } = await supabase
           .from("shopping_products")
-          .insert([{ shopping_id: shoppingId, name, count: 0 }]);
+          .insert([{ shopping_id: shoppingId, name }]);
         if (error) alert("Errore: " + error.message);
         else {
           document.getElementById("history-select").value = "";
