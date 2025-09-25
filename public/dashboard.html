@@ -151,10 +151,7 @@
         <!-- Colonna titolo (prende tutto lo spazio disponibile) -->
         <div class="flex items-center gap-3 min-w-0">
           <i data-lucide="shopping-bag" class="w-5 h-5 text-[var(--brand)]"></i>
-          <span class="title truncate relative group cursor-help">
-            <span class="visible-text"></span>
-            <span class="tooltip hidden absolute bottom-full left-0 mb-1 bg-gray-900 text-white text-xs rounded px-2 py-1 z-10 whitespace-normal max-w-[200px]"></span>
-          </span>
+          <span class="title truncate has-tooltip"></span>
         </div>
 
         <!-- Colonna pulsanti (larghezza fissa = bordo sinistro allineato su tutte le righe) -->
@@ -310,9 +307,9 @@
         data.forEach((row) => {
           const list = row.shopping_lists;
           const li = tpl.content.cloneNode(true);
-          const span = li.querySelector(".title");
-          span.querySelector(".visible-text").textContent = list.title; // testo visibile (troncato)
-          span.querySelector(".tooltip").textContent = list.title; // testo completo per il tooltip
+          const tEl = li.querySelector(".title");
+          tEl.textContent = list.title;      // testo visibile (troncato)
+          tEl.dataset.full = list.title;     // testo completo per il tooltip
           li.querySelector(".open").addEventListener(
             "click",
             () => (window.location.href = `shopping.html?id=${list.id}`),
@@ -333,22 +330,24 @@
         lucide.createIcons();
       }
 
-      // Chiudi i tooltip se tocchi/clicki fuori
-      document.addEventListener("click", () => {
-        document.querySelectorAll(".tooltip").forEach(t => {
-          t.classList.add("hidden");
-          t.style.opacity = "0";
-        });
-      });
+      // Tooltip mobile: tap per aprire/chiudere, tap fuori per chiudere
+      document.addEventListener('click', (e) => {
+        const isTouchOnly = window.matchMedia('(hover: none)').matches; // true su smartphone/tablet
+        if (!isTouchOnly) return; // su desktop gestiamo via :hover in CSS
 
-      // Attiva/disattiva tooltip al click sul nome
-      document.querySelectorAll(".title").forEach(span => {
-        span.addEventListener("click", (e) => {
-          const tooltip = span.querySelector(".tooltip");
-          tooltip.classList.toggle("hidden");
-          tooltip.style.opacity = tooltip.classList.contains("hidden") ? "0" : "1";
-          e.stopPropagation();
-        });
+        const target = e.target.closest('.has-tooltip');
+
+        if (target) {
+          // Chiudi altri tooltip aperti
+          document.querySelectorAll('.has-tooltip.show-tip').forEach(el => {
+            if (el !== target) el.classList.remove('show-tip');
+          });
+          // Toggle su quello toccato
+          target.classList.toggle('show-tip');
+        } else {
+          // Tap fuori: chiudi tutti
+          document.querySelectorAll('.has-tooltip.show-tip').forEach(el => el.classList.remove('show-tip'));
+        }
       });
     </script>
   </body>

@@ -83,16 +83,6 @@ body{
   padding:12px 14px;
 }
 
-.tooltip {
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.group:hover .tooltip {
-  display: block;
-  opacity: 1;
-}
-
 /* Badge */
 .badge{
   display:inline-flex; align-items:center; gap:.4rem;
@@ -136,3 +126,36 @@ body{
 .container{ max-width: 1080px; margin: 0 auto; padding: 24px; }
 .muted{ color: var(--muted); }
 .hr{ border-top:1px solid #1f1f1f; margin:16px 0; }
+
+/* Tooltip semplice, desktop + mobile */
+.has-tooltip { position: relative; }
+
+.has-tooltip::after {
+  content: attr(data-full);
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  margin-bottom: 6px;
+  background: #111;
+  color: #fff;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-size: 12px;
+  line-height: 1.2;
+  white-space: normal;
+  max-width: 260px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease;
+  z-index: 30;
+}
+
+/* Mostra tooltip al passaggio del mouse (solo dispositivi con hover) */
+@media (hover:hover) {
+  .has-tooltip:hover::after { opacity: 1; }
+}
+
+/* Mostra tooltip su mobile quando attivo via JS */
+.has-tooltip.show-tip::after { opacity: 1; }
