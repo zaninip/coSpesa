@@ -258,13 +258,10 @@
           const nameEl = liEl.querySelector(".name");
           nameEl.classList.add("line-through", "text-gray-400");
 
-          // fade-out e rimozione
-          setTimeout(() => {
-            liEl.classList.add("fade-out");
-            setTimeout(() => liEl.remove(), 500);
-          }, 400);
+          // disabilita il bottone "Comprato"
+          liEl.querySelector(".buy").disabled = true;
 
-          // aggiorna lo storico (non serve ricaricare tutta la lista)
+          // aggiorna lo storico
           loadHistoryProducts();
         }
       }
