@@ -83,6 +83,16 @@ body{
   padding:12px 14px;
 }
 
+.tooltip {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.group:hover .tooltip {
+  display: block;
+  opacity: 1;
+}
+
 /* Badge */
 .badge{
   display:inline-flex; align-items:center; gap:.4rem;

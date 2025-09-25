@@ -96,7 +96,10 @@
         <!-- Colonna nome -->
         <div class="flex items-center gap-3 min-w-0">
           <i data-lucide="circle" class="w-4 h-4 text-[var(--brand)]"></i>
-          <span class="name truncate"></span>
+          <span class="name truncate relative group cursor-help">
+            <span class="visible-text"></span>
+            <span class="tooltip hidden absolute bottom-full left-0 mb-1 bg-gray-900 text-white text-xs rounded px-2 py-1 z-10 whitespace-normal max-w-[200px]"></span>
+          </span>
         </div>
 
         <!-- Colonna pulsanti con larghezza fissa -->
@@ -178,7 +181,9 @@
         const tpl = document.getElementById("tpl-product");
         data.forEach((p) => {
           const li = tpl.content.cloneNode(true);
-          li.querySelector(".name").textContent = p.name;
+          const span = li.querySelector(".name");
+          span.firstChild.textContent = p.name; // testo visibile (troncato)
+          span.querySelector(".tooltip").textContent = p.name; // testo nel tooltip
           if (p.bought) {
             li.querySelector(".name").classList.add(
               "line-through",
@@ -260,6 +265,23 @@
         if (error) alert("Errore: " + error.message);
         else loadProducts();
       }
+
+      // Gestione tooltip su mobile (tap per aprire/chiudere)
+      document.addEventListener("click", () => {
+        document.querySelectorAll(".tooltip").forEach(t => {
+          t.classList.add("hidden");
+          t.style.opacity = "0";
+        });
+      });
+
+      document.querySelectorAll(".name").forEach(span => {
+        span.addEventListener("click", (e) => {
+          const tooltip = span.querySelector(".tooltip");
+          tooltip.classList.toggle("hidden");
+          tooltip.style.opacity = tooltip.classList.contains("hidden") ? "0" : "1";
+          e.stopPropagation();
+        });
+      });
     </script>
   </body>
 </html>
