@@ -151,7 +151,9 @@
         <!-- Colonna titolo (prende tutto lo spazio disponibile) -->
         <div class="flex items-center gap-3 min-w-0">
           <i data-lucide="shopping-bag" class="w-5 h-5 text-[var(--brand)]"></i>
-          <span class="title truncate has-tooltip"></span>
+          <span class="title has-tooltip" data-full="">
+            <span class="clip truncate"></span>
+          </span>
         </div>
 
         <!-- Colonna pulsanti (larghezza fissa = bordo sinistro allineato su tutte le righe) -->
@@ -307,9 +309,9 @@
         data.forEach((row) => {
           const list = row.shopping_lists;
           const li = tpl.content.cloneNode(true);
-          const tEl = li.querySelector(".title");
-          tEl.textContent = list.title;      // testo visibile (troncato)
-          tEl.dataset.full = list.title;     // testo completo per il tooltip
+          const tWrap = li.querySelector(".title");
+          tWrap.dataset.full = list.title;                              // testo completo per tooltip
+          tWrap.querySelector(".clip").textContent = list.title;        // testo visibile troncato
           li.querySelector(".open").addEventListener(
             "click",
             () => (window.location.href = `shopping.html?id=${list.id}`),

@@ -96,7 +96,9 @@
         <!-- Colonna nome -->
         <div class="flex items-center gap-3 min-w-0">
           <i data-lucide="circle" class="w-4 h-4 text-[var(--brand)]"></i>
-          <span class="name truncate has-tooltip"></span>
+          <span class="name has-tooltip" data-full="">
+            <span class="clip truncate"></span>
+          </span>
         </div>
 
         <!-- Colonna pulsanti con larghezza fissa -->
@@ -178,9 +180,9 @@
         const tpl = document.getElementById("tpl-product");
         data.forEach((p) => {
           const li = tpl.content.cloneNode(true);
-          const nEl = li.querySelector(".name");
-          nEl.textContent = p.name;          // testo visibile (troncato)
-          nEl.dataset.full = p.name;         // testo completo per il tooltip
+          const nWrap = li.querySelector(".name");
+          nWrap.dataset.full = p.name;                                  // testo completo per tooltip
+          nWrap.querySelector(".clip").textContent = p.name;            // testo visibile troncato
           if (p.bought) {
             li.querySelector(".name").classList.add(
               "line-through",
