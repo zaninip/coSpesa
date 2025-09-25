@@ -92,13 +92,15 @@
     </main>
 
     <template id="tpl-product">
-      <li class="li flex items-center justify-between">
-        <div class="flex items-center gap-3">
+      <li class="li flex items-center gap-3">
+        <!-- Colonna nome -->
+        <div class="flex items-center gap-3 min-w-0">
           <i data-lucide="circle" class="w-4 h-4 text-[var(--brand)]"></i>
-          <span class="name"></span>
+          <span class="name truncate"></span>
         </div>
 
-        <div class="flex flex-wrap sm:flex-nowrap gap-2">
+        <!-- Colonna pulsanti con larghezza fissa -->
+        <div class="ml-auto w-40 sm:w-52 md:w-60 flex flex-wrap sm:flex-nowrap justify-end gap-2">
           <button class="buy btn btn-primary px-2 py-1 text-sm sm:px-3 sm:py-2 sm:text-base flex items-center gap-1">
             <i data-lucide="check" class="w-4 h-4"></i> Comprato
           </button>

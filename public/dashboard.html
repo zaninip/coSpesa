@@ -147,12 +147,15 @@
     </div>
 
     <template id="tpl-list-item">
-      <li class="li flex items-center justify-between">
-        <div class="flex items-center gap-3">
+      <li class="li flex items-center gap-3">
+        <!-- Colonna titolo (prende tutto lo spazio disponibile) -->
+        <div class="flex items-center gap-3 min-w-0">
           <i data-lucide="shopping-bag" class="w-5 h-5 text-[var(--brand)]"></i>
-          <span class="title"></span>
+          <span class="title truncate"></span>
         </div>
-        <div class="flex flex-wrap sm:flex-nowrap gap-2">
+
+        <!-- Colonna pulsanti (larghezza fissa = bordo sinistro allineato su tutte le righe) -->
+        <div class="ml-auto w-44 sm:w-56 md:w-64 flex flex-wrap sm:flex-nowrap justify-end gap-2">
           <button class="open btn btn-primary px-2 py-1 text-sm sm:px-3 sm:py-2 sm:text-base flex items-center gap-1">
             <i data-lucide="arrow-right" class="w-4 h-4"></i> Apri
           </button>
