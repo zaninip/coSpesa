@@ -253,12 +253,21 @@
               .from("shopping_lists")
               .insert([{ title, code, owner_id: user.id }])
               .select()
-              .single();
-            if (error) return alert("Errore creazione: " + error.message);
+              .single();            
+            if (error) {
+              showModal({
+                title: "Errore creazione",
+                message: error.message,
+                buttons: [{ label: "OK", class: "btn btn-primary" }]
+              })};
             await supabase
               .from("shopping_participants")
               .insert([{ shopping_id: data.id, user_id: user.id }]);
-            alert(`Spesa creata! Codice: ${data.code}`);
+            showModal({
+                title: "Spesa creata",
+                message: `Codice: ${data.code}`,
+                buttons: [{ label: "OK", class: "btn btn-primary" }]
+            });
             closeCreate();
             loadShoppingLists();
           });
