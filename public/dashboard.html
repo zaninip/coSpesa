@@ -172,7 +172,7 @@
     </template>
 
     <script type="module">
-      import { supabase, requireAuth } from "./app.js";
+      import { supabase, requireAuth, showModal } from "./app.js";
       let user = null;
 
       document.addEventListener("DOMContentLoaded", async () => {
@@ -316,9 +316,14 @@
             "click",
             () => (window.location.href = `shopping.html?id=${list.id}`),
           );
-          li.querySelector(".code").addEventListener("click", () =>
-            alert(`Codice: ${list.code}`),
-          );
+          li.querySelector(".code").addEventListener("click", () => {
+            navigator.clipboard.writeText(list.code);
+            showModal({
+              title: "Codice copiato",
+              message: `Il codice della spesa <b>${list.code}</b> è stato copiato negli appunti.`,
+              buttons: [{ label: "OK", class: "btn btn-primary" }]
+            });
+          });
           li.querySelector(".hide").addEventListener("click", async () => {
             await supabase
               .from("shopping_participants")
@@ -352,5 +357,17 @@
         }
       });
     </script>
+
+    <!-- Modal generica -->
+    <div id="app-modal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
+      <div class="bg-[#0a0a0a] border border-yellow-400 rounded-xl shadow-lg max-w-md w-full p-6 text-center">
+        <h2 id="modal-title" class="text-xl font-bold text-yellow-400 mb-3">Titolo</h2>
+        <p id="modal-message" class="text-white mb-6">Messaggio</p>
+        <div id="modal-buttons" class="flex justify-center gap-3">
+          <!-- Pulsanti inseriti via JS -->
+        </div>
+      </div>
+    </div>
+
   </body>
 </html>

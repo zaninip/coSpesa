@@ -176,3 +176,17 @@ body{
   opacity: 0;
   transform: translateX(20px);
 }
+
+#app-modal {
+  display: none;
+}
+
+#app-modal.show {
+  display: flex; /* centrato */
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
