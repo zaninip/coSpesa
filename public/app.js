@@ -5,7 +5,7 @@ export function showModal({ title, message, buttons }) {
   if (!modal) return;
 
   document.getElementById("modal-title").textContent = title;
-  document.getElementById("modal-message").textContent = message;
+  document.getElementById("modal-message").innerHTML = message;
 
   const btnContainer = document.getElementById("modal-buttons");
   btnContainer.innerHTML = "";

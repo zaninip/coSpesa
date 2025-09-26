@@ -243,9 +243,13 @@
           .from("shopping_products")
           .insert([{ shopping_id: shoppingId, name }]);
         if (error) {
+          let msg = error.message;
+          if (msg.includes("ux_products_per_shopping_name_ci")) {
+            msg = "Prodotto già presente nella spesa";
+          }
           showModal({
             title: "Errore",
-            message: error.message,
+            message: msg,
             buttons: [{ label: "OK", class: "btn btn-primary" }]
           });
         }
@@ -262,9 +266,13 @@
           .from("shopping_products")
           .insert([{ shopping_id: shoppingId, name }]);
         if (error) {
+          let msg = error.message;
+          if (msg.includes("ux_products_per_shopping_name_ci")) {
+            msg = "Prodotto già presente nella spesa";
+          }
           showModal({
             title: "Errore",
-            message: error.message,
+            message: msg,
             buttons: [{ label: "OK", class: "btn btn-primary" }]
           });
         }
