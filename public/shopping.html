@@ -81,6 +81,14 @@
 
       <section class="card p-5 fade-in">
         <h2 class="text-xl font-bold mb-3">Prodotti</h2>
+        <div class="flex justify-end gap-2 mb-3">
+          <button type="button" id="clear-bought" class="btn btn-secondary text-sm">
+            🧹 Svuota comprati
+          </button>
+          <button type="button" id="clear-all" class="btn btn-danger text-sm">
+            ❌ Svuota spesa
+          </button>
+        </div>
         <ul id="products-list" class="space-y-3"></ul>
       </section>
 
@@ -148,6 +156,11 @@
         document
           .getElementById("add-from-history")
           .addEventListener("click", addFromHistory);
+        
+        document.getElementById("clear-bought")
+          .addEventListener("click", clearBought);
+        document.getElementById("clear-all")
+          .addEventListener("click", clearAll);
       });
 
       async function loadShoppingInfo() {
@@ -278,6 +291,39 @@
           // fade-out immediato e rimozione
           liEl.classList.add("fade-out");
           setTimeout(() => liEl.remove(), 500);
+        }
+      }
+
+      // Elimina solo i prodotti già comprati
+      async function clearBought() {
+        const { error } = await supabase
+          .from("shopping_products")
+          .delete()
+          .eq("shopping_id", shoppingId)
+          .eq("bought", true);
+
+        if (error) {
+          alert("Errore: " + error.message);
+        } else {
+          loadProducts();
+        }
+      }
+
+      // Elimina TUTTI i prodotti (con conferma)
+      async function clearAll() {
+        if (!confirm("⚠️ Attenzione, stai eliminando tutti i prodotti, anche quelli non comprati. Sei sicuro di voler continuare?")) {
+          return;
+        }
+
+        const { error } = await supabase
+          .from("shopping_products")
+          .delete()
+          .eq("shopping_id", shoppingId);
+
+        if (error) {
+          alert("Errore: " + error.message);
+        } else {
+          loadProducts();
         }
       }
 
