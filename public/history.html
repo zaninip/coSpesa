@@ -59,13 +59,14 @@
     <script type="module">
       import { supabase, requireAuth } from "./app.js";
       let user = null;
+      let shoppingId = null;
 
       document.addEventListener("DOMContentLoaded", async () => {
         lucide.createIcons();
         user = await requireAuth();
 
         const params = new URLSearchParams(window.location.search);
-        const shoppingId = params.get("id");
+        shoppingId = params.get("id");
         if (!shoppingId) window.location.href = "dashboard.html";
 
         document.getElementById("back-to-shopping").href = `shopping.html?id=${shoppingId}`;
