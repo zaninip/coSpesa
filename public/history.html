@@ -31,7 +31,7 @@
         <a
           id="back-to-shopping"
           class="btn btn-secondary flex items-center gap-2"
-          ><i data-lucide="arrow-left" class="w-5 h-5"></i>⬅ Torna alla spesa</a
+          ><i data-lucide="arrow-left" class="w-5 h-5"></i> Spesa</a
         >
       </div>
     </header>
@@ -65,7 +65,7 @@
         user = await requireAuth();
 
         const params = new URLSearchParams(window.location.search);
-        shoppingId = params.get("id");
+        const shoppingId = params.get("id");
         if (!shoppingId) window.location.href = "dashboard.html";
 
         document.getElementById("back-to-shopping").href = `shopping.html?id=${shoppingId}`;
