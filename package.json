@@ -1,20 +1,16 @@
 {
   "name": "cospesa",
   "version": "1.0.0",
-  "description": "CoSpesa – app spesa condivisa (Supabase + static frontend)",
-  "type": "module",
+  "description": "CoSpesa – app spesa condivisa (static + Supabase)",
   "scripts": {
     "dev": "vercel dev"
   },
   "keywords": [
     "shopping",
     "supabase",
-    "tailwind",
-    "dark-theme"
+    "static",
+    "tailwind"
   ],
   "author": "Paolo Zanini",
-  "license": "MIT",
-  "dependencies": {
-    "@supabase/supabase-js": "^2.43.0"
-  }
+  "license": "MIT"
 }
