@@ -27,12 +27,6 @@
           <span class="badge">Dashboard</span>
         </div>
         <nav class="flex items-center gap-3">
-          <button
-            id="go-history"
-            class="btn btn-secondary flex items-center gap-2"
-          >
-            <i data-lucide="bar-chart-3" class="w-5 h-5"></i> Storico
-          </button>
           <button id="logout" class="btn btn-danger flex items-center gap-2">
             <i data-lucide="log-out" class="w-5 h-5"></i> Esci
           </button>
@@ -180,19 +174,13 @@
         user = await requireAuth();
         await loadShoppingLists();
 
-        // logout e storico
+        // logout
         document
           .getElementById("logout")
           .addEventListener("click", async () => {
             await supabase.auth.signOut();
             window.location.href = "login.html";
           });
-        document
-          .getElementById("go-history")
-          .addEventListener(
-            "click",
-            () => (window.location.href = "history.html"),
-          );
 
         // modali open/close
         const createModal = document.getElementById("create-modal");
