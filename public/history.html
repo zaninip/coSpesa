@@ -23,7 +23,7 @@
     <header class="border-b border-[#1f1f1f]">
       <div class="container flex items-center justify-between py-4">
         <div class="flex items-center gap-3">
-          <a id="back-logo"
+          <a href="dashboard.html"
             ><img src="assets/logo.svg" class="h-9" alt="CoSpesa"
           /></a>
           <span class="badge">Storico</span>
@@ -70,7 +70,6 @@
         if (!shoppingId) window.location.href = "dashboard.html";
 
         document.getElementById("back-to-shopping").href = `shopping.html?id=${shoppingId}`;
-        document.getElementById("back-logo").href = `shopping.html?id=${shoppingId}`;
 
         await loadHistory();
       });
