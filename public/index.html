@@ -6,52 +6,16 @@
     <meta http-equiv="refresh" content="0; url=login.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
-    <style>
-      body {
-        background: #0a0a0a;
-        color: #ffd54a;
-        font-family: "Inter", sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-      }
-      .msg {
-        text-align: center;
-        animation: fade 1.2s infinite alternate;
-      }
-      @keyframes fade {
-        from {
-          opacity: 0.6;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-    </style>
   </head>
-  <body>
-    <div class="msg">
+  <body style="background:#0a0a0a; color:#ffd54a; font-family:Inter,sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;">
+    <div style="text-align:center;">
       <h1>🛒 CoSpesa</h1>
       <p>Reindirizzamento al login...</p>
       <p>
-        <a href="login.html" style="color: #ffd54a"
-          >Clicca qui se non vieni reindirizzato</a
-        >
+        <a href="login.html" style="color:#ffd54a;">
+          Clicca qui se non vieni reindirizzato
+        </a>
       </p>
     </div>
-
-    <!-- Modal generica -->
-    <div id="app-modal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
-      <div class="bg-[#0a0a0a] border border-yellow-400 rounded-xl shadow-lg max-w-md w-full p-6 text-center">
-        <h2 id="modal-title" class="text-xl font-bold text-yellow-400 mb-3">Titolo</h2>
-        <p id="modal-message" class="text-white mb-6">Messaggio</p>
-        <div id="modal-buttons" class="flex justify-center gap-3">
-          <!-- Pulsanti inseriti via JS -->
-        </div>
-      </div>
-    </div>
-
   </body>
 </html>
