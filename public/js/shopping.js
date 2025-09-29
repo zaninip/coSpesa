@@ -1,9 +1,10 @@
-import { supabase, requireAuth, showModal } from "./app.js";
+import { supabase, requireAuth, showModal, initMobileTooltips } from "./app.js";
 let user = null,
 shoppingId = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
 lucide.createIcons();
+initMobileTooltips(); // attiva i tooltip su mobile
 user = await requireAuth();
 
 const params = new URLSearchParams(window.location.search);
@@ -237,23 +238,3 @@ if (error) {
     loadProducts();
 }
 }
-
-// Tooltip mobile: tap per aprire/chiudere, tap fuori per chiudere
-document.addEventListener('click', (e) => {
-const isTouchOnly = window.matchMedia('(hover: none)').matches; // true su smartphone/tablet
-if (!isTouchOnly) return; // su desktop gestiamo via :hover in CSS
-
-const target = e.target.closest('.has-tooltip');
-
-if (target) {
-    // Chiudi altri tooltip aperti
-    document.querySelectorAll('.has-tooltip.show-tip').forEach(el => {
-    if (el !== target) el.classList.remove('show-tip');
-    });
-    // Toggle su quello toccato
-    target.classList.toggle('show-tip');
-} else {
-    // Tap fuori: chiudi tutti
-    document.querySelectorAll('.has-tooltip.show-tip').forEach(el => el.classList.remove('show-tip'));
-}
-});

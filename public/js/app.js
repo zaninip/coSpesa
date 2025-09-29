@@ -41,3 +41,26 @@ export async function requireAuth() {
   }
   return session.user;
 }
+
+// Tooltip mobile: tap per aprire/chiudere, tap fuori per chiudere
+export function initMobileTooltips() {
+  
+  document.addEventListener('click', (e) => {
+  const isTouchOnly = window.matchMedia('(hover: none)').matches; // true su smartphone/tablet
+  if (!isTouchOnly) return; // su desktop gestiamo via :hover in CSS
+
+  const target = e.target.closest('.has-tooltip');
+
+  if (target) {
+      // Chiudi altri tooltip aperti
+      document.querySelectorAll('.has-tooltip.show-tip').forEach(el => {
+      if (el !== target) el.classList.remove('show-tip');
+      });
+      // Toggle su quello toccato
+      target.classList.toggle('show-tip');
+  } else {
+      // Tap fuori: chiudi tutti
+      document.querySelectorAll('.has-tooltip.show-tip').forEach(el => el.classList.remove('show-tip'));
+  }
+  });
+}
