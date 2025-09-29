@@ -8,6 +8,13 @@ document.getElementById("login").addEventListener("click", async () => {
         email,
         password,
     });
-    if (error) alert("Errore login: " + error.message);
-    else window.location.href = "dashboard.html";
+    if (error) {
+        showModal({
+            title: "Errore login",
+            message: error.message,
+            buttons: [{ label: "OK", class: "btn btn-primary" }]
+        });
+    } else {
+        window.location.href = "dashboard.html";
+    }
 });

@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         .addEventListener("click", async () => {
         await supabase.auth.signOut();
         window.location.href = "login.html";
-        });
+    });
 
     // modali open/close
     const createModal = document.getElementById("create-modal");
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
         closeCreate();
         loadShoppingLists();
-        });
+    });
 
     // conferma join
     document
@@ -115,10 +115,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             return alert("Errore unione: " + jerr.message);
         closeJoin();
         loadShoppingLists();
-        });
     });
+});
 
-    async function loadShoppingLists() {
+async function loadShoppingLists() {
     const ul = document.getElementById("shopping-list");
     ul.innerHTML = "";
     const { data, error } = await supabase

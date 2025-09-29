@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadHistory();
     });
 
-    async function loadHistory() {
+async function loadHistory() {
     const tb = document.getElementById("history-body");
     tb.innerHTML = "";
     const { data, error } = await supabase

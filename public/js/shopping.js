@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         .addEventListener("click", clearAll);
     });
 
-    async function loadShoppingInfo() {
+async function loadShoppingInfo() {
     const { data, error } = await supabase
         .from("shopping_lists")
         .select("title, code")
@@ -57,9 +57,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     document.getElementById("shopping-title").textContent = data.title;
     document.getElementById("shopping-code").textContent = data.code;
-    }
+}
 
-    async function loadProducts() {
+async function loadProducts() {
     const ul = document.getElementById("products-list");
     ul.innerHTML = "";
     const { data, error } = await supabase
@@ -94,9 +94,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         ul.appendChild(li);
     });
     lucide.createIcons();
-    }
+}
 
-    async function loadHistoryProducts() {
+async function loadHistoryProducts() {
     const select = document.getElementById("history-select");
     select.innerHTML = `<option value="">— Seleziona prodotto —</option>`;
     const { data, error } = await supabase
@@ -111,9 +111,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         opt.textContent = `${p.name} (${p.total_count} volte)`;
         select.appendChild(opt);
     });
-    }
+}
 
-    async function addManual() {
+async function addManual() {
     const name = document.getElementById("new-product").value.trim();
     if (!name) return;
     const { error } = await supabase
@@ -134,9 +134,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("new-product").value = "";
         loadProducts();
     }
-    }
+}
 
-    async function addFromHistory() {
+async function addFromHistory() {
     const name = document.getElementById("history-select").value;
     if (!name) return;
     const { error } = await supabase
@@ -157,9 +157,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("history-select").value = "";
         loadProducts();
     }
-    }
+}
 
-    async function handleProductBought(productId, liEl) {
+async function handleProductBought(productId, liEl) {
     const { error } = await supabase.rpc("increment_product_count", {
         pid: productId,
         sid: shoppingId,
@@ -178,9 +178,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         // aggiorna lo storico
         loadHistoryProducts();
     }
-    }
+}
 
-    async function handleProductRemoved(productId, liEl) {
+async function handleProductRemoved(productId, liEl) {
     const { error } = await supabase
         .from("shopping_products")
         .delete()
@@ -220,9 +220,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         { label: "Si", class: "btn btn-danger", onClick: clearAllConfirmed }
         ]
     });
-    }
+}
 
-    async function clearAllConfirmed() {
+async function clearAllConfirmed() {
     const { error } = await supabase
         .from("shopping_products")
         .delete()
