@@ -51,8 +51,15 @@ async function loadShoppingInfo() {
         .eq("id", shoppingId)
         .single();
     if (error || !data) {
-        alert("Errore spesa");
-        window.location.href = "dashboard.html";
+        showModal({
+            title: "Errore",
+            message: "Impossibile caricare la spesa.",
+            buttons: [{
+            label: "Torna alla Dashboard",
+            class: "btn btn-primary",
+            onClick: () => window.location.href = "dashboard.html"
+            }]
+        });
         return;
     }
     document.getElementById("shopping-title").textContent = data.title;
@@ -166,7 +173,11 @@ async function handleProductBought(productId, liEl) {
     });
 
     if (error) {
-        alert("Errore: " + error.message);
+        showModal({
+            title: "Errore",
+            message: error.message,
+            buttons: [{ label: "OK", class: "btn btn-primary" }]
+        });
     } else {
         // segna visivamente come comprato
         const nameEl = liEl.querySelector(".name");
@@ -187,7 +198,11 @@ async function handleProductRemoved(productId, liEl) {
         .eq("id", productId);
 
     if (error) {
-        alert("Errore: " + error.message);
+        showModal({
+            title: "Errore",
+            message: error.message,
+            buttons: [{ label: "OK", class: "btn btn-primary" }]
+        });
     } else {
         // fade-out immediato e rimozione
         liEl.classList.add("fade-out");
@@ -204,14 +219,18 @@ async function handleProductRemoved(productId, liEl) {
         .eq("bought", true);
 
     if (error) {
-        alert("Errore: " + error.message);
+        showModal({
+            title: "Errore",
+            message: error.message,
+            buttons: [{ label: "OK", class: "btn btn-primary" }]
+        });
     } else {
         loadProducts();
     }
-    }
+}
 
-    // Elimina TUTTI i prodotti (con conferma)
-    function clearAll() {
+// Elimina TUTTI i prodotti (con conferma)
+function clearAll() {
     showModal({
         title: "Sei sicuro?",
         message: "⚠️ Stai per eliminare TUTTI i prodotti della spesa, anche quelli non comprati.",

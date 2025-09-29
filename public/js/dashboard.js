@@ -65,7 +65,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         .getElementById("confirm-create")
         .addEventListener("click", async () => {
         const title = document.getElementById("create-title").value.trim();
-        if (!title) return alert("Inserisci un nome valido");
+        if (!title) {
+            showModal({
+                title: "Attenzione",
+                message: "Inserisci un nome valido",
+                buttons: [{ label: "OK", class: "btn btn-primary" }]
+            });
+            return;
+        }
         const code = Math.random()
             .toString(36)
             .substring(2, 8)
@@ -101,18 +108,38 @@ document.addEventListener("DOMContentLoaded", async () => {
             .getElementById("join-code")
             .value.trim()
             .toUpperCase();
-        if (!code) return alert("Inserisci un codice valido");
+        if (!code) {
+            showModal({
+                title: "Attenzione",
+                message: "Inserisci un codice valido",
+                buttons: [{ label: "OK", class: "btn btn-primary" }]
+            });
+            return;
+        }
         const { data: list, error } = await supabase
             .from("shopping_lists")
             .select("id")
             .eq("code", code)
             .single();
-        if (error || !list) return alert("Codice non valido.");
+        if (error || !list) {
+            showModal({
+                title: "Errore",
+                message: "Codice non valido",
+                buttons: [{ label: "OK", class: "btn btn-primary" }]
+            });
+            return;
+        }
         const { error: jerr } = await supabase
             .from("shopping_participants")
             .insert([{ shopping_id: list.id, user_id: user.id }]);
-        if (jerr && !String(jerr.message).includes("duplicate"))
-            return alert("Errore unione: " + jerr.message);
+        if (jerr && !String(jerr.message).includes("duplicate")) {
+            showModal({
+                title: "Errore unione",
+                message: jerr.message,
+                buttons: [{ label: "OK", class: "btn btn-primary" }]
+            });
+            return;
+        }
         closeJoin();
         loadShoppingLists();
     });
