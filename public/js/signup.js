@@ -5,9 +5,21 @@ import { supabase } from "./app.js";
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
     const { error } = await supabase.auth.signUp({ email, password });
-    if (error) alert("Errore registrazione: " + error.message);
-    else {
-        alert("Registrazione effettuata! Ora effettua il login.");
-        window.location.href = "login.html";
+    if (error) {
+        showModal({
+            title: "Errore registrazione",
+            message: error.message,
+            buttons: [{ label: "OK", class: "btn btn-primary" }]
+        });
+    } else {
+        showModal({
+            title: "Registrazione completata",
+            message: "Ora effettua il login.",
+            buttons: [{
+            label: "OK",
+            class: "btn btn-primary",
+            onClick: () => window.location.href = "login.html"
+            }]
+        });
     }
 });
