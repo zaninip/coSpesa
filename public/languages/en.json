@@ -25,7 +25,7 @@
     "newListDesc": "Create a list and get a shareable code",
     "joinList": "Join with code",
     "joinListDesc": "Access an existing list",
-    "yourLists": "Your lists",
+    "yourLists": "Your shopping lists",
     "empty": "No shopping list created or joined yet",
     "insertName": "Enter the name of the shopping list to create.",
     "namePlaceholder": "E.g. Weekly shopping",
@@ -51,7 +51,11 @@
     "fromHistory": "Or choose from history:",
     "clearBought": "🧹 Clear bought",
     "clearAll": "❌ Clear list",
-    "products": "Products"
+    "products": "Products",
+    "buttons": {
+      "buy": "Bought",
+      "delete": "Deleted"
+    }
   },
   "history": {
     "badge": "History",

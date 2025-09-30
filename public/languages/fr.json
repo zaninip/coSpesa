@@ -25,7 +25,7 @@
     "newListDesc": "Créez une liste et obtenez un code partageable",
     "joinList": "Rejoindre avec un code",
     "joinListDesc": "Accéder à une liste existante",
-    "yourLists": "Vos listes",
+    "yourLists": "Vos listes des courses",
     "empty": "Aucune liste encore créée ou rejointe",
     "insertName": "Entrez le nom de la liste à créer.",
     "namePlaceholder": "Ex. Courses hebdomadaires",
@@ -51,7 +51,11 @@
     "fromHistory": "Ou choisir depuis l'historique :",
     "clearBought": "🧹 Vider achetés",
     "clearAll": "❌ Vider la liste",
-    "products": "Produits"
+    "products": "Produits",
+    "buttons": {
+      "buy": "Acheté",
+      "delete": "Supprimé"
+    }
   },
   "history": {
     "badge": "Historique",

@@ -1,6 +1,6 @@
 {
   "login": {
-    "badge": "Login",
+    "badge": "Connessione",
     "title": "Bentornata/o",
     "subtitle": "Accedi per gestire e condividere la tua spesa.",
     "email": "Email",
@@ -51,7 +51,11 @@
     "fromHistory": "Oppure scegli dallo storico:",
     "clearBought": "🧹 Svuota comprati",
     "clearAll": "❌ Svuota spesa",
-    "products": "Prodotti"
+    "products": "Prodotti",
+    "buttons": {
+      "buy": "Comprato",
+      "delete": "Eliminato"
+    }
   },
   "history": {
     "badge": "Storico",
