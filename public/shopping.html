@@ -26,18 +26,26 @@
           <a href="dashboard.html"
             ><img src="assets/logo.svg" class="h-9" alt="CoSpesa"
           /></a>
-          <span class="badge">Lista</span>
+          <span class="badge" data-i18n="shopping.badge">Spesa</span>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-3">
           <a
             href="dashboard.html"
             class="btn btn-secondary flex items-center gap-2"
           >
-            <i data-lucide="arrow-left" class="w-5 h-5"></i> Dashboard
+            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            <span data-i18n="back_dashboard" data-i18n="dashboard.badge">Dashboard</span>
           </a>
           <button id="history" class="btn btn-secondary flex items-center gap-2">
-            <i data-lucide="bar-chart-2" class="w-5 h-5"></i> Storico
+            <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+            <span data-i18n="history">Storico</span>
           </button>
+          <select id="lang-switch"
+            class="input bg-[#0f0f0f] text-white text-sm border border-[#2a2a2a] rounded-md px-2 py-1">
+            <option value="it">🇮🇹 IT</option>
+            <option value="en">🇬🇧 EN</option>
+            <option value="fr">🇫🇷 FR</option>
+          </select>
         </div>
       </div>
     </header>
@@ -45,55 +53,41 @@
     <main class="container space-y-5">
       <div class="card p-5 flex items-center justify-between">
         <div>
-          <h1 id="shopping-title" class="text-2xl font-extrabold">
-            Lista Spesa
-          </h1>
+          <h1 id="shopping-title" class="text-2xl font-extrabold" data-i18n="shopping.title">Lista Spesa</h1>
           <p class="muted mt-1">
-            Codice:
-            <span id="shopping-code" class="text-[var(--brand)] font-bold"
-              >-</span
-            >
+            <span data-i18n="shopping.code">Codice:</span>
+            <span id="shopping-code" class="text-[var(--brand)] font-bold">-</span>
           </p>
         </div>
-        <button id="copy-code" class="btn btn-primary flex items-center gap-2">
+        <button id="copy-code" class="btn btn-primary flex items-center gap-2" data-i18n="shopping.copy">
           <i data-lucide="copy" class="w-5 h-5"></i> Copia
         </button>
       </div>
 
       <section class="card p-5">
         <div class="grid md:grid-cols-[1fr_auto] gap-3">
-          <input
-            id="new-product"
-            class="input w-full"
-            placeholder="Aggiungi prodotto..."
-          />
-          <button
-            id="add-product"
-            class="btn btn-primary flex items-center justify-center gap-2"
-          >
+          <input id="new-product" class="input w-full" placeholder="Aggiungi prodotto..." data-i18n="shopping.addManual"/>
+          <button id="add-product" class="btn btn-primary flex items-center justify-center gap-2" data-i18n="shopping.addButton">
             <i data-lucide="plus" class="w-5 h-5"></i> Aggiungi
           </button>
         </div>
 
         <div class="mt-4 grid md:grid-cols-[1fr_auto_auto] gap-3 items-center">
-          <div class="muted text-sm flex items-center gap-2">
-            <i data-lucide="history" class="w-4 h-4"></i> Oppure scegli dallo
-            storico:
+          <div class="muted text-sm flex items-center gap-2" data-i18n="shopping.fromHistory">
+            <i data-lucide="history" class="w-4 h-4"></i> Oppure scegli dallo storico:
           </div>
           <select id="history-select" class="input"></select>
-          <button id="add-from-history" class="btn btn-secondary">
-            Aggiungi
-          </button>
+          <button id="add-from-history" class="btn btn-secondary" data-i18n="shopping.addButton">Aggiungi</button>
         </div>
       </section>
 
       <section class="card p-5 fade-in">
-        <h2 class="text-xl font-bold mb-3">Prodotti</h2>
+        <h2 class="text-xl font-bold mb-3" data-i18n="shopping.products">Prodotti</h2>
         <div class="flex justify-end gap-2 mb-3">
-          <button type="button" id="clear-bought" class="btn btn-secondary text-sm">
+          <button type="button" id="clear-bought" class="btn btn-secondary text-sm" data-i18n="shopping.clearBought">
             🧹 Svuota comprati
           </button>
-          <button type="button" id="clear-all" class="btn btn-danger text-sm">
+          <button type="button" id="clear-all" class="btn btn-danger text-sm" data-i18n="shopping.clearAll">
             ❌ Svuota spesa
           </button>
         </div>
@@ -128,7 +122,7 @@
     <!-- Modal generica -->
     <div id="app-modal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
       <div class="bg-[#0a0a0a] border border-yellow-400 rounded-xl shadow-lg max-w-md w-full p-6 text-center">
-        <h2 id="modal-title" class="text-xl font-bold text-yellow-400 mb-3">Titolo</h2>
+        <h2 id="modal-title" class="text-xl font-bold text-yellow-400 mb-3" data-i18n="modals.error">Titolo</h2>
         <p id="modal-message" class="text-white mb-6">Messaggio</p>
         <div id="modal-buttons" class="flex justify-center gap-3">
           <!-- Pulsanti inseriti via JS -->

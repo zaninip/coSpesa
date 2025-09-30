@@ -1,8 +1,15 @@
-import { supabase, requireAuth, showModal, initMobileTooltips } from "./app.js";
+import { supabase, requireAuth, showModal, initMobileTooltips, initLang, setLanguage, t } from "./app.js";
 let user = null,
 shoppingId = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
+    await initLang(); // inizializza lingua
+    const langSel = document.getElementById("lang-switch");
+    if (langSel) {
+        langSel.value = localStorage.getItem("lang") || "it";
+        langSel.addEventListener("change", (e) => setLanguage(e.target.value));
+    }
+    
     lucide.createIcons();
     initMobileTooltips(); // attiva i tooltip su mobile
     user = await requireAuth();
@@ -25,9 +32,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         const code = document.getElementById("shopping-code").textContent;
         navigator.clipboard.writeText(code);
         showModal({
-        title: "Codice copiato",
-        message: `Il codice della spesa <b>${code}</b> è stato copiato negli appunti.`,
-        buttons: [{ label: "OK", class: "btn btn-primary" }]
+            title: t("modals.copied"),
+            message: t("modals.copiedMessage").replace("{{code}}", list.code),
+            buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
         });
     });
 
@@ -52,13 +59,9 @@ async function loadShoppingInfo() {
         .single();
     if (error || !data) {
         showModal({
-            title: "Errore",
-            message: "Impossibile caricare la spesa.",
-            buttons: [{
-            label: "Torna alla Dashboard",
-            class: "btn btn-primary",
-            onClick: () => window.location.href = "dashboard.html"
-            }]
+            title: t("modals.error"),
+            message: t("modals.errorLoad"),
+            buttons: [{label: t("modals.backDashboard"), class: "btn btn-primary", onClick: () => window.location.href = "dashboard.html"}]
         });
         return;
     }
@@ -129,12 +132,12 @@ async function addManual() {
     if (error) {
         let msg = error.message;
         if (msg.includes("ux_products_per_shopping_name_ci")) {
-        msg = "Prodotto già presente nella spesa";
+        msg = t("modals.existingProduct");
         }
         showModal({
-        title: "Errore",
+        title: t("modals.error"),
         message: msg,
-        buttons: [{ label: "OK", class: "btn btn-primary" }]
+        buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
         });
     }
     else {
@@ -152,12 +155,12 @@ async function addFromHistory() {
     if (error) {
         let msg = error.message;
         if (msg.includes("ux_products_per_shopping_name_ci")) {
-        msg = "Prodotto già presente nella spesa";
+        msg = t("modals.existingProduct");
         }
         showModal({
-        title: "Errore",
+        title: t("modals.error"),
         message: msg,
-        buttons: [{ label: "OK", class: "btn btn-primary" }]
+        buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
         });
     }
     else {
@@ -174,9 +177,9 @@ async function handleProductBought(productId, liEl) {
 
     if (error) {
         showModal({
-            title: "Errore",
+            title: t("modals.error"),
             message: error.message,
-            buttons: [{ label: "OK", class: "btn btn-primary" }]
+            buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
         });
     } else {
         // segna visivamente come comprato
@@ -199,9 +202,9 @@ async function handleProductRemoved(productId, liEl) {
 
     if (error) {
         showModal({
-            title: "Errore",
+            title: t("modals.error"),
             message: error.message,
-            buttons: [{ label: "OK", class: "btn btn-primary" }]
+            buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
         });
     } else {
         // fade-out immediato e rimozione
@@ -220,9 +223,9 @@ async function handleProductRemoved(productId, liEl) {
 
     if (error) {
         showModal({
-            title: "Errore",
+            title: t("modals.error"),
             message: error.message,
-            buttons: [{ label: "OK", class: "btn btn-primary" }]
+            buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
         });
     } else {
         loadProducts();
@@ -232,11 +235,11 @@ async function handleProductRemoved(productId, liEl) {
 // Elimina TUTTI i prodotti (con conferma)
 function clearAll() {
     showModal({
-        title: "Sei sicuro?",
-        message: "⚠️ Stai per eliminare TUTTI i prodotti della spesa, anche quelli non comprati.",
+        title: t("modals.confirm"),
+        message: t("modals.confirmDeleteAll"),
         buttons: [
-        { label: "No", class: "btn btn-secondary" },
-        { label: "Si", class: "btn btn-danger", onClick: clearAllConfirmed }
+        { label: t("modals.no"), class: "btn btn-secondary" },
+        { label: t("modals.ok"), class: "btn btn-danger", onClick: clearAllConfirmed }
         ]
     });
 }
@@ -249,9 +252,9 @@ async function clearAllConfirmed() {
 
     if (error) {
         showModal({
-        title: "Errore",
+        title: t("modals.error"),
         message: error.message,
-        buttons: [{ label: "OK", class: "btn btn-primary" }]
+        buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
         });
     } else {
         loadProducts();

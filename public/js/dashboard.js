@@ -1,7 +1,14 @@
-import { supabase, requireAuth, showModal, initMobileTooltips } from "./app.js";
+import { supabase, requireAuth, showModal, initMobileTooltips, initLang, setLanguage, t } from "./app.js";
 let user = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
+    await initLang(); // inizializza lingua
+    const langSel = document.getElementById("lang-switch");
+    if (langSel) {
+        langSel.value = localStorage.getItem("lang") || "it";
+        langSel.addEventListener("change", (e) => setLanguage(e.target.value));
+    }
+
     lucide.createIcons();
     initMobileTooltips(); // attiva i tooltip su mobile
     user = await requireAuth();
@@ -67,9 +74,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         const title = document.getElementById("create-title").value.trim();
         if (!title) {
             showModal({
-                title: "Attenzione",
-                message: "Inserisci un nome valido",
-                buttons: [{ label: "OK", class: "btn btn-primary" }]
+                title: t("modals.warning"),
+                message: t("modals.emptyTitle"),
+                buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
             });
             return;
         }
@@ -84,17 +91,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             .single();            
         if (error) {
             showModal({
-            title: "Errore creazione",
+            title: t("modals.errorCreation"),
             message: error.message,
-            buttons: [{ label: "OK", class: "btn btn-primary" }]
+            buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
             })};
         await supabase
             .from("shopping_participants")
             .insert([{ shopping_id: data.id, user_id: user.id }]);
         showModal({
-            title: "Spesa creata",
-            message: `Codice: ${data.code}`,
-            buttons: [{ label: "OK", class: "btn btn-primary" }]
+            title: t("modals.created"),
+            message: t("modals.code").replace("{{code}}", data.code),
+            buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
         });
         closeCreate();
         loadShoppingLists();
@@ -110,9 +117,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             .toUpperCase();
         if (!code) {
             showModal({
-                title: "Attenzione",
-                message: "Inserisci un codice valido",
-                buttons: [{ label: "OK", class: "btn btn-primary" }]
+                title: t("modals.warning"),
+                message: t("modals.validCode"),
+                buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
             });
             return;
         }
@@ -123,9 +130,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             .single();
         if (error || !list) {
             showModal({
-                title: "Errore",
-                message: "Codice non valido",
-                buttons: [{ label: "OK", class: "btn btn-primary" }]
+                title: t("modals.error"),
+                message: t("modals.errorCode"),
+                buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
             });
             return;
         }
@@ -134,9 +141,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             .insert([{ shopping_id: list.id, user_id: user.id }]);
         if (jerr && !String(jerr.message).includes("duplicate")) {
             showModal({
-                title: "Errore unione",
+                title: t("modals.errorJoin"),
                 message: jerr.message,
-                buttons: [{ label: "OK", class: "btn btn-primary" }]
+                buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
             });
             return;
         }
@@ -158,7 +165,7 @@ async function loadShoppingLists() {
         return;
     }
     if (!data || !data.length) {
-        ul.innerHTML = `<li class="muted">Nessuna spesa ancora creata o unita</li>`;
+        ul.innerHTML = `<li class="muted" data-i18n="dashboard.empty">Nessuna spesa ancora creata o unita</li>`;
         return;
     }
 
@@ -176,9 +183,9 @@ async function loadShoppingLists() {
         li.querySelector(".code").addEventListener("click", () => {
         navigator.clipboard.writeText(list.code);
         showModal({
-            title: "Codice copiato",
-            message: `Il codice della spesa <b>${list.code}</b> è stato copiato negli appunti.`,
-            buttons: [{ label: "OK", class: "btn btn-primary" }]
+            title: t("modals.copied"),
+            message: t("modals.copiedMessage").replace("{{code}}", list.code),
+            buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
         });
         });
         li.querySelector(".hide").addEventListener("click", async () => {

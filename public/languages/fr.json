@@ -1,0 +1,90 @@
+{
+  "login": {
+    "badge": "Connexion",
+    "title": "Bienvenue",
+    "subtitle": "Connectez-vous pour gérer et partager vos courses.",
+    "email": "Email",
+    "password": "Mot de passe",
+    "button": "Se connecter",
+    "noAccount": "Pas encore de compte ?",
+    "signupLink": "S'inscrire"
+  },
+  "signup": {
+    "badge": "Inscription",
+    "title": "Créer un compte",
+    "subtitle": "Rejoignez CoSpesa et partagez votre liste.",
+    "email": "Email",
+    "password": "Mot de passe",
+    "button": "S'inscrire",
+    "hasAccount": "Vous avez déjà un compte ?",
+    "loginLink": "Se connecter"
+  },
+  "dashboard": {
+    "badge": "Tableau de bord",
+    "newList": "Nouvelle liste",
+    "newListDesc": "Créez une liste et obtenez un code partageable",
+    "joinList": "Rejoindre avec un code",
+    "joinListDesc": "Accéder à une liste existante",
+    "yourLists": "Vos listes",
+    "empty": "Aucune liste encore créée ou rejointe",
+    "insertName": "Entrez le nom de la liste à créer.",
+    "namePlaceholder": "Ex. Courses hebdomadaires",
+    "create": "Créer",
+    "cancel": "Annuler",
+    "join": "Rejoindre",
+    "insertCode": "Entrez le code de la liste",
+    "insertCodeDesc": "Entrez le code unique pour rejoindre la liste.",
+    "codePlaceholder": "Ex. ABC123",
+    "buttons": {
+      "open": "Ouvrir",
+      "code": "Code",
+      "delete": "Supprimer"
+    }
+  },
+  "shopping": {
+    "badge": "Courses",
+    "title": "Liste de courses",
+    "code": "Code",
+    "copy": "Copier",
+    "addManual": "Ajouter un produit...",
+    "addButton": "Ajouter",
+    "fromHistory": "Ou choisir depuis l'historique :",
+    "clearBought": "🧹 Vider achetés",
+    "clearAll": "❌ Vider la liste",
+    "products": "Produits"
+  },
+  "history": {
+    "badge": "Historique",
+    "title": "Historique des produits",
+    "subtitle": "Combien de fois vous avez acheté chaque produit.",
+    "table": {
+      "product": "Produit",
+      "count": "Nombre d'achats",
+      "last": "Dernier achat"
+    },
+    "empty": "Aucun produit pour l'instant."
+  },
+  "modals": {
+    "ok": "OK",
+    "cancel": "Annuler",
+    "error": "Erreur",
+    "errorCreation": "Erreur de création",
+    "errorCode": "Code invalide",
+    "errorJoin": "Erreur de jonction",
+    "errorLoad": "Impossible de charger la liste.",
+    "created": "Liste créée",
+    "copied": "Code copié",
+    "copiedMessage": "Le code de la liste <b>{{code}}</b> a été copié.",
+    "confirm": "Êtes-vous sûr ?",
+    "confirmDeleteAll": "⚠️ Vous êtes sur le point de supprimer TOUS les produits de la liste, même ceux non achetés.",
+    "yes": "Oui",
+    "no": "Non",
+    "warning": "Attention",
+    "emptyTitle": "Veuillez entrer un nom valide",
+    "code": "Code : {{code}}",
+    "validCode": "Veuillez entrer un code valide",
+    "backDashboard": "Retour au tableau de bord",
+    "existingProduct": "Produit déjà dans la liste"
+  },
+  "logout": "Déconnexion"
+}

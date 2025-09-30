@@ -24,12 +24,19 @@
       <div class="container flex items-center justify-between py-4">
         <div class="flex items-center gap-3">
           <img src="assets/logo.svg" class="h-9" alt="CoSpesa" />
-          <span class="badge">Dashboard</span>
+          <span class="badge" data-i18n="dashboard.badge">Dashboard</span>
         </div>
         <nav class="flex items-center gap-3">
           <button id="logout" class="btn btn-danger flex items-center gap-2">
-            <i data-lucide="log-out" class="w-5 h-5"></i> Esci
+            <i data-lucide="log-out" class="w-5 h-5"></i>
+            <span data-i18n="logout">Esci</span>
           </button>
+          <select id="lang-switch"
+            class="input bg-[#0f0f0f] text-white text-sm border border-[#2a2a2a] rounded-md px-2 py-1">
+            <option value="it">🇮🇹 IT</option>
+            <option value="en">🇬🇧 EN</option>
+            <option value="fr">🇫🇷 FR</option>
+          </select>
         </nav>
       </div>
     </header>
@@ -41,10 +48,8 @@
           class="card p-5 text-left hover:translate-y-[-2px] transition flex items-center justify-between"
         >
           <div>
-            <h2 class="text-xl font-bold">Nuova spesa</h2>
-            <p class="muted">
-              Crea una lista e ottieni un codice condivisibile
-            </p>
+            <h2 class="text-xl font-bold" data-i18n="dashboard.newList">Nuova spesa</h2>
+            <p class="muted" data-i18n="dashboard.newListDesc">Crea una lista e ottieni un codice condivisibile</p>
           </div>
           <div class="btn btn-primary">
             <i data-lucide="plus" class="w-5 h-5"></i>
@@ -56,8 +61,8 @@
           class="card p-5 text-left hover:translate-y-[-2px] transition flex items-center justify-between"
         >
           <div>
-            <h2 class="text-xl font-bold">Unisciti con codice</h2>
-            <p class="muted">Accedi a una spesa esistente</p>
+            <h2 class="text-xl font-bold" data-i18n="dashboard.joinList">Unisciti con codice</h2>
+            <p class="muted" data-i18n="dashboard.joinListDesc">Accedi a una spesa esistente</p>
           </div>
           <div class="btn btn-secondary">
             <i data-lucide="key-round" class="w-5 h-5"></i>
@@ -67,55 +72,37 @@
 
       <section class="card p-5 fade-in">
         <div class="flex items-center justify-between mb-3">
-          <h2 class="text-xl font-bold">Le tue spese</h2>
+          <h2 class="text-xl font-bold" data-i18n="dashboard.yourLists">Le tue spese</h2>
         </div>
         <ul id="shopping-list" class="space-y-3"></ul>
       </section>
     </main>
 
     <!-- MODAL CREAZIONE SPESA -->
-    <div
-      id="create-modal"
-      class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50"
-    >
-      <div
-        class="card p-6 w-full max-w-md transform scale-95 opacity-0 transition-all"
-        id="create-content"
-      >
+    <div id="create-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+      <div class="card p-6 w-full max-w-md transform scale-95 opacity-0 transition-all" id="create-content">
         <div class="flex items-center justify-between mb-4">
-          <h2 class="text-xl font-bold flex items-center gap-2">
-            <i data-lucide="plus" class="w-5 h-5 text-[var(--brand)]"></i> Nuova
-            spesa
+          <h2 class="text-xl font-bold flex items-center gap-2" data-i18n="dashboard.newList">
+            <i data-lucide="plus" class="w-5 h-5 text-[var(--brand)]"></i> Nuova spesa
           </h2>
           <button id="close-create" class="text-gray-400 hover:text-white">
             <i data-lucide="x" class="w-6 h-6"></i>
           </button>
         </div>
-        <p class="muted mb-4">Inserisci il nome della spesa da creare.</p>
-        <input
-          type="text"
-          id="create-title"
-          class="input w-full mb-4"
-          placeholder="Es. Spesa settimanale"
-        />
+        <p class="muted mb-4" data-i18n="dashboard.insertName">Inserisci il nome della spesa da creare.</p>
+        <input type="text" id="create-title" class="input w-full mb-4" placeholder="Es. Spesa settimanale" data-i18n="dashboard.namePlaceholder"/>
         <div class="flex justify-end gap-3">
-          <button id="cancel-create" class="btn btn-secondary">Annulla</button>
-          <button id="confirm-create" class="btn btn-primary">Crea</button>
+          <button id="cancel-create" class="btn btn-secondary" data-i18n="dashboard.cancel">Annulla</button>
+          <button id="confirm-create" class="btn btn-primary" data-i18n="dashboard.create">Crea</button>
         </div>
       </div>
     </div>
 
     <!-- MODAL JOIN SPESA -->
-    <div
-      id="join-modal"
-      class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50"
-    >
-      <div
-        class="card p-6 w-full max-w-md transform scale-95 opacity-0 transition-all"
-        id="join-content"
-      >
+    <div id="join-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+      <div class="card p-6 w-full max-w-md transform scale-95 opacity-0 transition-all" id="join-content">
         <div class="flex items-center justify-between mb-4">
-          <h2 class="text-xl font-bold flex items-center gap-2">
+          <h2 class="text-xl font-bold flex items-center gap-2" data-i18n="dashboard.insertCode">
             <i data-lucide="key-round" class="w-5 h-5 text-[var(--brand)]"></i>
             Inserisci codice spesa
           </h2>
@@ -123,19 +110,11 @@
             <i data-lucide="x" class="w-6 h-6"></i>
           </button>
         </div>
-        <p class="muted mb-4">
-          Inserisci il codice unico della spesa a cui vuoi unirti.
-        </p>
-        <input
-          type="text"
-          id="join-code"
-          class="input w-full mb-4 uppercase"
-          placeholder="CODICE"
-          maxlength="8"
-        />
+        <p class="muted mb-4" data-i18n="dashboard.insertCodeDesc">Inserisci il codice unico per unirti alla lista.</p>
+        <input type="text" id="join-code" class="input w-full mb-4 uppercase" placeholder="Es. ABC123" maxlength="8" data-i18n="dashboard.codePlaceholder"/>
         <div class="flex justify-end gap-3">
-          <button id="cancel-join" class="btn btn-secondary">Annulla</button>
-          <button id="confirm-join" class="btn btn-primary">Unisciti</button>
+          <button id="cancel-join" class="btn btn-secondary" data-i18n="dashboard.cancel">Annulla</button>
+          <button id="confirm-join" class="btn btn-primary" data-i18n="dashboard.join">Unisciti</button>
         </div>
       </div>
     </div>
@@ -152,14 +131,14 @@
 
         <!-- Colonna pulsanti (larghezza fissa = bordo sinistro allineato su tutte le righe) -->
         <div class="ml-auto w-44 sm:w-56 md:w-64 flex flex-wrap sm:flex-nowrap justify-end gap-2">
-          <button type="button" class="open btn btn-primary px-2 py-1 text-sm sm:px-3 sm:py-2 sm:text-base flex items-center gap-1">
+          <button type="button" class="open btn btn-primary px-2 py-1 text-sm sm:px-3 sm:py-2 sm:text-base flex items-center gap-1" data-i18n="dashboard.buttons.open">
             <i data-lucide="arrow-right" class="w-4 h-4"></i> Apri
           </button>
-          <button type="button" class="code btn btn-secondary px-2 py-1 text-sm sm:px-3 sm:py-2 sm:text-base flex items-center gap-1">
+          <button type="button" class="code btn btn-secondary px-2 py-1 text-sm sm:px-3 sm:py-2 sm:text-base flex items-center gap-1" data-i18n="dashboard.buttons.code">
             <i data-lucide="key-round" class="w-4 h-4"></i> Codice
           </button>
-          <button type="button" class="hide btn btn-danger px-2 py-1 text-sm sm:px-3 sm:py-2 sm:text-base flex items-center gap-1">
-            <i data-lucide="eye-off" class="w-4 h-4"></i> Nascondi
+          <button type="button" class="hide btn btn-danger px-2 py-1 text-sm sm:px-3 sm:py-2 sm:text-base flex items-center gap-1" data-i18n="dashboard.buttons.delete">
+            <i data-lucide="eye-off" class="w-4 h-4"></i> Elimina
           </button>
         </div>
       </li>
@@ -170,8 +149,8 @@
     <!-- Modal generica -->
     <div id="app-modal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
       <div class="bg-[#0a0a0a] border border-yellow-400 rounded-xl shadow-lg max-w-md w-full p-6 text-center">
-        <h2 id="modal-title" class="text-xl font-bold text-yellow-400 mb-3">Titolo</h2>
-        <p id="modal-message" class="text-white mb-6">Messaggio</p>
+        <h2 id="modal-title" class="text-xl font-bold text-yellow-400 mb-3">Titolo</h2> <!-- placeholder visivo nell’HTML, che viene sovrascritto da showModal -->
+        <p id="modal-message" class="text-white mb-6">Messaggio</p> <!-- placeholder visivo nell’HTML, che viene sovrascritto da showModal -->
         <div id="modal-buttons" class="flex justify-center gap-3">
           <!-- Pulsanti inseriti via JS -->
         </div>

@@ -64,3 +64,39 @@ export function initMobileTooltips() {
   }
   });
 }
+
+let translations = {};
+let currentLang = "it";
+
+export async function setLanguage(lang) {
+  try {
+    const res = await fetch(`/languages/${lang}.json`);
+    translations = await res.json();
+    currentLang = lang;
+    localStorage.setItem("lang", lang);
+    applyTranslations();
+  } catch (e) {
+    console.error("Errore caricamento lingua:", e);
+  }
+}
+
+export function t(key) {
+  return key.split(".").reduce((o, k) => (o ? o[k] : null), translations) || key;
+}
+
+// Applica traduzioni a tutti gli elementi con data-lang
+function applyTranslations() {
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    const text = t(key);
+    if (text) el.textContent = text;
+  });
+}
+
+// Carica lingua salvata o di sistema
+export async function initLang() {
+  const saved = localStorage.getItem("lang");
+  const browser = navigator.language.slice(0, 2); // "it", "fr", "en"
+  const lang = saved || (["it", "fr", "en"].includes(browser) ? browser : "en");
+  await setLanguage(lang);
+}

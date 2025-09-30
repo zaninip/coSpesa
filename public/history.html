@@ -26,28 +26,35 @@
           <a href="dashboard.html"
             ><img src="assets/logo.svg" class="h-9" alt="CoSpesa"
           /></a>
-          <span class="badge">Storico</span>
+          <span class="badge" data-i18n="history" data-i18n="history.badge">Storico</span>
         </div>
-        <a
-          id="back-to-shopping"
-          class="btn btn-secondary flex items-center gap-2"
-          ><i data-lucide="arrow-left" class="w-5 h-5"></i> Spesa</a
-        >
+        <div class="flex items-center gap-3">
+          <a id="back-to-shopping" class="btn btn-secondary flex items-center gap-2">
+            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            <span data-i18n="back_shopping" data-i18n="shopping.badge">Spesa</span>
+          </a>
+          <select id="lang-switch"
+            class="input bg-[#0f0f0f] text-white text-sm border border-[#2a2a2a] rounded-md px-2 py-1">
+            <option value="it">🇮🇹 IT</option>
+            <option value="en">🇬🇧 EN</option>
+            <option value="fr">🇫🇷 FR</option>
+          </select>
+        </div>
       </div>
     </header>
 
     <main class="container space-y-5">
       <section class="card p-5 fade-in">
-        <h1 class="text-2xl font-extrabold mb-1">Storico prodotti</h1>
-        <p class="muted">Quante volte hai comprato ciascun prodotto.</p>
+        <h1 class="text-2xl font-extrabold mb-1" data-i18n="history.title">Storico prodotti</h1>
+        <p class="muted" data-i18n="history.subtitle">Quante volte hai comprato ciascun prodotto.</p>
 
         <div class="overflow-x-auto mt-4">
           <table class="table">
             <thead>
               <tr>
-                <th>Prodotto</th>
-                <th>Numero acquisti</th>
-                <th>Data ultimo acquisto</th>
+                <th data-i18n="history.table.product">Prodotto</th>
+                <th data-i18n="history.table.count">Numero acquisti</th>
+                <th data-i18n="history.table.last">Data ultimo acquisto</th>
               </tr>
             </thead>
             <tbody id="history-body"></tbody>

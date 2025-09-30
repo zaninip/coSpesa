@@ -1,8 +1,15 @@
-import { supabase, requireAuth } from "./app.js";
+import { supabase, requireAuth, initLang, setLanguage } from "./app.js";
 let user = null;
 let shoppingId = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
+    await initLang(); // inizializza lingua
+    const langSel = document.getElementById("lang-switch");
+    if (langSel) {
+        langSel.value = localStorage.getItem("lang") || "it";
+        langSel.addEventListener("change", (e) => setLanguage(e.target.value));
+    }
+    
     lucide.createIcons();
     user = await requireAuth();
 

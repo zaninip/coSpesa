@@ -1,0 +1,90 @@
+{
+  "login": {
+    "badge": "Login",
+    "title": "Bentornata/o",
+    "subtitle": "Accedi per gestire e condividere la tua spesa.",
+    "email": "Email",
+    "password": "Password",
+    "button": "Accedi",
+    "noAccount": "Non hai un account?",
+    "signupLink": "Registrati"
+  },
+  "signup": {
+    "badge": "Registrazione",
+    "title": "Crea account",
+    "subtitle": "Entra in CoSpesa e condividi la tua lista.",
+    "email": "Email",
+    "password": "Password",
+    "button": "Registrati",
+    "hasAccount": "Hai già un account?",
+    "loginLink": "Accedi"
+  },
+  "dashboard": {
+    "badge": "Dashboard",
+    "newList": "Nuova spesa",
+    "newListDesc": "Crea una lista e ottieni un codice condivisibile",
+    "joinList": "Unisciti con codice",
+    "joinListDesc": "Accedi a una spesa esistente",
+    "yourLists": "Le tue spese",
+    "empty": "Nessuna spesa ancora creata o unita",
+    "insertName": "Inserisci il nome della spesa da creare.",
+    "namePlaceholder": "Es. Spesa settimanale",
+    "create": "Crea",
+    "cancel": "Annulla",
+    "join": "Unisciti",
+    "insertCode": "Inserisci codice spesa",
+    "insertCodeDesc": "Inserisci il codice unico per unirti alla lista.",
+    "codePlaceholder": "Es. ABC123",
+    "buttons": {
+      "open": "Apri",
+      "code": "Codice",
+      "delete": "Elimina"
+    }
+  },
+  "shopping": {
+    "badge": "Lista",
+    "title": "Lista Spesa",
+    "code": "Codice",
+    "copy": "Copia",
+    "addManual": "Aggiungi prodotto...",
+    "addButton": "Aggiungi",
+    "fromHistory": "Oppure scegli dallo storico:",
+    "clearBought": "🧹 Svuota comprati",
+    "clearAll": "❌ Svuota spesa",
+    "products": "Prodotti"
+  },
+  "history": {
+    "badge": "Storico",
+    "title": "Storico prodotti",
+    "subtitle": "Quante volte hai comprato ciascun prodotto.",
+    "table": {
+      "product": "Prodotto",
+      "count": "Numero acquisti",
+      "last": "Data ultimo acquisto"
+    },
+    "empty": "Nessun prodotto ancora."
+  },
+  "modals": {
+    "ok": "OK",
+    "cancel": "Annulla",
+    "error": "Errore",
+    "errorCreation": "Errore creazione",
+    "errorCode": "Codice non valido",
+    "errorJoin": "Errore unione",
+    "errorLoad": "Impossibile caricare la spesa.",
+    "created": "Spesa creata",
+    "copied": "Codice copiato",
+    "copiedMessage": "Il codice della spesa <b>{{code}}</b> è stato copiato negli appunti.",
+    "confirm": "Sei sicuro?",
+    "confirmDeleteAll": "⚠️ Stai per eliminare TUTTI i prodotti della spesa, anche quelli non comprati.",
+    "yes": "Si",
+    "no": "No",
+    "warning": "Attenzione",
+    "emptyTitle": "Inserisci un nome valido",
+    "code": "Codice: {{code}}",
+    "validCode": "Inserisci un codice valido",
+    "backDashboard": "Torna alla Dashboard",
+    "existingProduct": "Prodotto già presente nella spesa"
+  },
+  "logout": "Esci"
+}

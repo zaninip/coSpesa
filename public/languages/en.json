@@ -1,0 +1,90 @@
+{
+  "login": {
+    "badge": "Login",
+    "title": "Welcome back",
+    "subtitle": "Log in to manage and share your shopping.",
+    "email": "Email",
+    "password": "Password",
+    "button": "Login",
+    "noAccount": "Don't have an account?",
+    "signupLink": "Sign up"
+  },
+  "signup": {
+    "badge": "Sign up",
+    "title": "Create account",
+    "subtitle": "Join CoSpesa and share your list.",
+    "email": "Email",
+    "password": "Password",
+    "button": "Sign up",
+    "hasAccount": "Already have an account?",
+    "loginLink": "Login"
+  },
+  "dashboard": {
+    "badge": "Dashboard",
+    "newList": "New shopping list",
+    "newListDesc": "Create a list and get a shareable code",
+    "joinList": "Join with code",
+    "joinListDesc": "Access an existing list",
+    "yourLists": "Your lists",
+    "empty": "No shopping list created or joined yet",
+    "insertName": "Enter the name of the shopping list to create.",
+    "namePlaceholder": "E.g. Weekly shopping",
+    "create": "Create",
+    "cancel": "Cancel",
+    "join": "Join",
+    "insertCode": "Enter shopping list code",
+    "insertCodeDesc": "Enter the unique code to join the shopping list.",
+    "codePlaceholder": "E.g. ABC123",
+    "buttons": {
+      "open": "Open",
+      "code": "Code",
+      "delete": "Delete"
+    }
+  },
+  "shopping": {
+    "badge": "Shopping List",
+    "title": "Shopping List",
+    "code": "Code",
+    "copy": "Copy",
+    "addManual": "Add product...",
+    "addButton": "Add",
+    "fromHistory": "Or choose from history:",
+    "clearBought": "🧹 Clear bought",
+    "clearAll": "❌ Clear list",
+    "products": "Products"
+  },
+  "history": {
+    "badge": "History",
+    "title": "Product history",
+    "subtitle": "How many times you bought each product.",
+    "table": {
+      "product": "Product",
+      "count": "Purchase count",
+      "last": "Last purchase"
+    },
+    "empty": "No products yet."
+  },
+  "modals": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "error": "Error",
+    "errorCreation": "Creation error",
+    "errorCode": "Invalid code",
+    "errorJoin": "Join error",
+    "errorLoad": "Unable to load shopping list",
+    "created": "List created",
+    "copied": "Code copied",
+    "copiedMessage": "The shopping list code <b>{{code}}</b> has been copied to clipboard.",
+    "confirm": "Are you sure?",
+    "confirmDeleteAll": "⚠️ You are about to delete ALL products in the list, even those not bought.",
+    "yes": "Yes",
+    "no": "No",
+    "warning": "Warning",
+    "emptyTitle": "Please enter a valid name",
+    "code": "Code: {{code}}",
+    "validCode": "Please enter a valid code",
+    "backDashboard": "Back to Dashboard",
+    "existingProduct": "Product already in the shopping list"
+  },
+  "logout": "Logout"
+}
