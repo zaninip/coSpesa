@@ -1,4 +1,4 @@
-import { supabase, setLanguage, initLang, showModal } from "../app.js";
+import { supabase, initLang, showModal } from "../app.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     lucide.createIcons();
