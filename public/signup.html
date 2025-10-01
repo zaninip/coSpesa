@@ -20,12 +20,15 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="bg-[var(--bg)] text-white">
+    
     <header class="border-b border-[#1f1f1f]">
-      <div class="container flex items-center justify-between py-4">
+      <div class="container flex flex-col sm:flex-row sm:items-center sm:justify-between py-3 gap-3">
+        <!-- Logo + badge -->
         <div class="flex items-center gap-3">
-          <img src="assets/logo.svg" class="h-9" alt="CoSpesa" />
+          <img src="assets/logo.svg" class="h-8 sm:h-9" alt="CoSpesa" />
           <span class="badge" data-i18n="signup.badge">Registrazione</span>
         </div>
+        <!-- Language switcher -->
         <div id="lang-switch" class="relative">
           <button id="lang-btn" class="input flex items-center gap-2 px-3 py-1">
             <img id="lang-flag" src="assets/flags/it.svg" class="w-5 h-5" alt="IT">
@@ -44,11 +47,6 @@
             </button>
           </div>
         </div>
-        <!-- <select id="lang-select" class="input w-28 text-sm">
-          <option value="it">IT</option>
-          <option value="fr">FR</option>
-          <option value="en">EN</option>
-        </select> -->
       </div>
     </header>
 
