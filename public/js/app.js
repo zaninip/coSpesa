@@ -100,3 +100,38 @@ export async function initLang() {
   const lang = saved || (["it", "fr", "en"].includes(browser) ? browser : "en");
   await setLanguage(lang);
 }
+
+// Gestione switch lingua con menu a bandiere
+document.addEventListener("DOMContentLoaded", () => {
+  const langBtn = document.getElementById("lang-btn");
+  const langMenu = document.getElementById("lang-menu");
+  const langFlag = document.getElementById("lang-flag");
+  const langLabel = document.getElementById("lang-label");
+
+  if (!langBtn) return; // se la pagina non ha selettore
+
+  // toggle menu
+  langBtn.addEventListener("click", () => {
+    langMenu.classList.toggle("hidden");
+  });
+
+  // click fuori → chiude
+  document.addEventListener("click", (e) => {
+    if (!langBtn.contains(e.target) && !langMenu.contains(e.target)) {
+      langMenu.classList.add("hidden");
+    }
+  });
+
+  // selezione lingua
+  langMenu.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const lang = btn.dataset.lang;
+      await setLanguage(lang);
+
+      // aggiorna pulsante
+      langFlag.src = `assets/flags/${lang}.svg`;
+      langLabel.textContent = lang.toUpperCase();
+      langMenu.classList.add("hidden");
+    });
+  });
+});
