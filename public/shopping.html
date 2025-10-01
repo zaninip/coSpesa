@@ -104,6 +104,23 @@
       </section>
 
       <section class="card p-5 fade-in">
+        <!-- Riga titolo + pulsanti -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
+          <h2 class="text-xl font-bold" data-i18n="shopping.products">Prodotti</h2>
+          <div class="flex flex-col sm:flex-row sm:justify-end gap-2">
+            <button type="button" id="clear-bought" class="btn btn-secondary text-sm" data-i18n="shopping.clearBought">
+              🧹 Svuota comprati
+            </button>
+            <button type="button" id="clear-all" class="btn btn-danger text-sm" data-i18n="shopping.clearAll">
+              ❌ Svuota spesa
+            </button>
+          </div>
+        </div>
+        <!-- Lista prodotti -->
+        <ul id="products-list" class="space-y-3"></ul>
+      </section>
+
+      <!-- <section class="card p-5 fade-in">
         <h2 class="text-xl font-bold mb-3" data-i18n="shopping.products">Prodotti</h2>
         <div class="flex justify-end gap-2 mb-3">
           <button type="button" id="clear-bought" class="btn btn-secondary text-sm" data-i18n="shopping.clearBought">
@@ -114,7 +131,7 @@
           </button>
         </div>
         <ul id="products-list" class="space-y-3"></ul>
-      </section>
+      </section> -->
     </main>
 
     <template id="tpl-product">
