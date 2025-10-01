@@ -1,11 +1,9 @@
-import { supabase, setLanguage, initLang } from "./app.js";
-lucide.createIcons();
+import { supabase, showModal, initLang } from "./app.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
+    lucide.createIcons();
+
     await initLang(); // inizializza lingua
-    const langSelect = document.getElementById("lang-select");
-    langSelect.value = localStorage.getItem("lang") || "it";
-    langSelect.addEventListener("change", e => setLanguage(e.target.value));
 
     document.getElementById("login").addEventListener("click", async () => {
         const email = document.getElementById("email").value.trim();
