@@ -20,18 +20,22 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="bg-[var(--bg)] text-white">
+    
     <header class="border-b border-[#1f1f1f]">
-      <div class="container flex items-center justify-between py-4">
+      <div class="container flex flex-col sm:flex-row sm:items-center sm:justify-between py-3 gap-3">
+        <!-- Logo + badge -->
         <div class="flex items-center gap-3">
-          <img src="assets/logo.svg" class="h-9" alt="CoSpesa" />
+          <img src="assets/logo.svg" class="h-8 sm:h-9" alt="CoSpesa" />
           <span class="badge" data-i18n="dashboard.badge">Dashboard</span>
         </div>
-        <nav class="flex items-center gap-3">
+        <!-- Pulsanti -->
+        <div class="flex flex-wrap sm:flex-nowrap items-center gap-2">
           <button id="logout" class="btn btn-danger flex items-center gap-2">
             <i data-lucide="log-out" class="w-5 h-5"></i>
-            <span data-i18n="logout">Esci</span>
+            <span class="hidden xs:inline" data-i18n="logout">Esci</span>
           </button>
-            <div id="lang-switch" class="relative">
+          <!-- Language switcher -->
+          <div id="lang-switch" class="relative">
             <button id="lang-btn" class="input flex items-center gap-2 px-3 py-1">
               <img id="lang-flag" src="assets/flags/it.svg" class="w-5 h-5" alt="IT">
               <span id="lang-label">IT</span>
@@ -49,13 +53,7 @@
               </button>
             </div>
           </div>
-          <!-- <select id="lang-switch"
-            class="input bg-[#0f0f0f] text-white text-sm border border-[#2a2a2a] rounded-md px-2 py-1">
-            <option value="it">IT</option>
-            <option value="en">EN</option>
-            <option value="fr">FR</option>
-          </select> -->
-        </nav>
+        </div>
       </div>
     </header>
 

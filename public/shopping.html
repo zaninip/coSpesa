@@ -20,26 +20,27 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="bg-[var(--bg)] text-white">
+    
     <header class="border-b border-[#1f1f1f]">
-      <div class="container flex items-center justify-between py-4">
+      <div class="container flex flex-col sm:flex-row sm:items-center sm:justify-between py-3 gap-3">
+        <!-- Logo + badge -->
         <div class="flex items-center gap-3">
-          <a href="dashboard.html"
-            ><img src="assets/logo.svg" class="h-9" alt="CoSpesa"
-          /></a>
-          <span class="badge" data-i18n="shopping.badge">Spesa</span>
+          <a href="dashboard.html">
+            <img src="assets/logo.svg" class="h-8 sm:h-9" alt="CoSpesa" />
+          </a>
+          <span class="badge" data-i18n="shopping.badge">Lista</span>
         </div>
-        <div class="flex items-center gap-3">
-          <a
-            href="dashboard.html"
-            class="btn btn-secondary flex items-center gap-2"
-          >
+        <!-- Pulsanti -->
+        <div class="flex flex-wrap sm:flex-nowrap items-center gap-2">
+          <a href="dashboard.html" class="btn btn-secondary flex items-center gap-2">
             <i data-lucide="arrow-left" class="w-5 h-5"></i>
-            <span data-i18n="dashboard.badge">Dashboard</span>
+            <span class="hidden xs:inline" data-i18n="dashboard.badge">Dashboard</span>
           </a>
           <button id="history" class="btn btn-secondary flex items-center gap-2">
             <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
-            <span data-i18n="history.badge">Storico</span>
+            <span class="hidden xs:inline" data-i18n="history.badge">Storico</span>
           </button>
+          <!-- Language switcher -->
           <div id="lang-switch" class="relative">
             <button id="lang-btn" class="input flex items-center gap-2 px-3 py-1">
               <img id="lang-flag" src="assets/flags/it.svg" class="w-5 h-5" alt="IT">
@@ -58,12 +59,6 @@
               </button>
             </div>
           </div>
-          <!-- <select id="lang-switch"
-            class="input bg-[#0f0f0f] text-white text-sm border border-[#2a2a2a] rounded-md px-2 py-1">
-            <option value="it">IT</option>
-            <option value="en">EN</option>
-            <option value="fr">FR</option>
-          </select> -->
         </div>
       </div>
     </header>
