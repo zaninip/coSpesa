@@ -42,6 +42,33 @@
           </button>
           <!-- Language switcher -->
           <div id="lang-switch" class="relative">
+            <button id="lang-btn"
+              class="input flex items-center gap-2 px-2 py-1 cursor-pointer min-w-[70px] sm:min-w-[90px]">
+              <img id="lang-flag" src="assets/flags/it.svg" class="w-5 h-5" alt="IT">
+              <span id="lang-label" class="hidden sm:inline">IT</span>
+              <i data-lucide="chevron-down" class="w-4 h-4"></i>
+            </button>
+
+            <div id="lang-menu"
+              class="absolute right-0 mt-2 hidden bg-[#0f0f0f] border border-[#2a2a2a] rounded-md shadow-lg z-50 min-w-[100px]">
+              <button data-lang="it"
+                class="flex items-center gap-2 px-3 py-2 hover:bg-[#1a1a1a] w-full text-left">
+                <img src="assets/flags/it.svg" class="w-5 h-5" alt="IT">
+                <span class="hidden sm:inline">IT</span>
+              </button>
+              <button data-lang="en"
+                class="flex items-center gap-2 px-3 py-2 hover:bg-[#1a1a1a] w-full text-left">
+                <img src="assets/flags/en.svg" class="w-5 h-5" alt="EN">
+                <span class="hidden sm:inline">EN</span>
+              </button>
+              <button data-lang="fr"
+                class="flex items-center gap-2 px-3 py-2 hover:bg-[#1a1a1a] w-full text-left">
+                <img src="assets/flags/fr.svg" class="w-5 h-5" alt="FR">
+                <span class="hidden sm:inline">FR</span>
+              </button>
+            </div>
+          </div>
+          <!-- <div id="lang-switch" class="relative">
             <button id="lang-btn" class="input flex items-center gap-2 px-3 py-1">
               <img id="lang-flag" src="assets/flags/it.svg" class="w-5 h-5" alt="IT">
               <span id="lang-label">IT</span>
@@ -58,7 +85,7 @@
                 <img src="assets/flags/fr.svg" class="w-5 h-5" alt="FR"> FR
               </button>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </header>
