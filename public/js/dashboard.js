@@ -176,25 +176,24 @@ async function loadShoppingLists() {
         const tWrap = li.querySelector(".title");
         tWrap.dataset.full = list.title;                              // testo completo per tooltip
         tWrap.querySelector(".clip").textContent = list.title;        // testo visibile troncato
-        li.querySelector(".open").addEventListener(
-        "click",
-        () => (window.location.href = `shopping.html?id=${list.id}`),
+        li.querySelector(".open").addEventListener("click", () =>
+            (window.location.href = `shopping.html?id=${list.id}`),
         );
-        li.querySelector(".code").addEventListener("click", () => {
-        navigator.clipboard.writeText(list.code);
-        showModal({
-            title: t("modals.copied"),
-            message: t("modals.copiedMessage").replace("{{code}}", list.code),
-            buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
-        });
-        });
+        // li.querySelector(".code").addEventListener("click", () => {
+        // navigator.clipboard.writeText(list.code);
+        // showModal({
+        //     title: t("modals.copied"),
+        //     message: t("modals.copiedMessage").replace("{{code}}", list.code),
+        //     buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
+        // });
+        // });
         li.querySelector(".hide").addEventListener("click", async () => {
-        await supabase
-            .from("shopping_participants")
-            .delete()
-            .eq("shopping_id", list.id)
-            .eq("user_id", user.id);
-        loadShoppingLists();
+            await supabase
+                .from("shopping_participants")
+                .delete()
+                .eq("shopping_id", list.id)
+                .eq("user_id", user.id);
+            loadShoppingLists();
         });
         ul.appendChild(li);
     });
