@@ -162,7 +162,7 @@ body{
 
 /* Animazioni per i prodotti */
 .li {
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
 }
 
 /* Stato comprato: barrato + grigio */
@@ -175,6 +175,11 @@ body{
 .li.fade-out {
   opacity: 0;
   transform: translateX(20px);
+}
+
+.li.fade-out-up {
+  opacity: 0;
+  transform: translateY(-10px);
 }
 
 #app-modal {

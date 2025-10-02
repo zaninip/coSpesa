@@ -228,7 +228,12 @@ async function handleProductRemoved(productId, liEl) {
             buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
         });
     } else {
-        loadProducts();
+        // Trova tutti i prodotti comprati e rimuovili con fade-out
+        document.querySelectorAll("#products-list .li .name.line-through")
+            .forEach(nameEl => {
+            const li = nameEl.closest(".li");
+            if (li) removeWithAnimation(li, "all");
+        });
     }
 }
 
@@ -257,6 +262,17 @@ async function clearAllConfirmed() {
         buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
         });
     } else {
-        loadProducts();
+        // Rimuovi tutti i prodotti in lista con fade-out
+        document.querySelectorAll("#products-list .li")
+            .forEach(li => removeWithAnimation(li, "all"));
     }
+}
+
+function removeWithAnimation(li, type = "single") {
+  if (type === "all") {
+    li.classList.add("fade-out-up");
+  } else {
+    li.classList.add("fade-out");
+  }
+  setTimeout(() => li.remove(), 500); // 500ms come da CSS
 }
