@@ -104,28 +104,8 @@
       </section>
 
       <section class="card p-5 fade-in">
-        <!-- Riga titolo + pulsanti -->
-        <div class="flex justify-between items-start sm:items-center mb-3 gap-3"></div>
-        <!-- <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3"> -->
-          <h2 class="text-xl font-bold" data-i18n="shopping.products">Prodotti</h2>
-          <div class="flex flex-col sm:flex-row gap-2">
-          <!-- <div class="flex flex-col sm:flex-row gap-2 items-end sm:items-center"> -->
-            <button type="button" id="clear-bought" class="btn btn-secondary text-sm" data-i18n="shopping.clearBought">
-              🧹 Svuota comprati
-            </button>
-            <button type="button" id="clear-all" class="btn btn-danger text-sm" data-i18n="shopping.clearAll">
-              ❌ Svuota spesa
-            </button>
-          </div>
-        </div>
-        <!-- Lista prodotti -->
-        <ul id="products-list" class="space-y-3"></ul>
-      </section>
-    </main>
-
-      <!-- <section class="card p-5 fade-in">
         <h2 class="text-xl font-bold mb-3" data-i18n="shopping.products">Prodotti</h2>
-        <div class="flex justify-end gap-2 mb-3">
+        <div class="flex flex-col sm:flex-row justify-end gap-2 mb-3">
           <button type="button" id="clear-bought" class="btn btn-secondary text-sm" data-i18n="shopping.clearBought">
             🧹 Svuota comprati
           </button>
@@ -134,7 +114,8 @@
           </button>
         </div>
         <ul id="products-list" class="space-y-3"></ul>
-      </section> -->
+      </section>
+    </main>
 
     <template id="tpl-product">
       <li class="li flex items-center gap-3">
