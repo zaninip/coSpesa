@@ -105,15 +105,21 @@
       </section>
 
       <section class="card p-5 fade-in">
-        <h2 class="text-xl font-bold mb-3" data-i18n="shopping.products">Prodotti</h2>
-        <div class="flex justify-end gap-2 mb-3">
-          <button type="button" id="clear-bought" class="btn btn-secondary text-sm" data-i18n="shopping.clearBought">
-            🧹 Svuota comprati
-          </button>
-          <button type="button" id="clear-all" class="btn btn-danger text-sm" data-i18n="shopping.clearAll">
-            ❌ Svuota spesa
-          </button>
+        <div class="flex items-center justify-between gap-2 mb-3">
+          <!-- Titolo a sinistra -->
+          <h2 class="text-xl font-bold" data-i18n="shopping.products">Prodotti</h2>
+          
+          <!-- Pulsanti a destra (colonna su mobile, riga su desktop) -->
+          <div class="flex flex-col sm:flex-row gap-2 shrink-0">
+            <button type="button" id="clear-bought" class="btn btn-secondary text-sm whitespace-nowrap" data-i18n="shopping.clearBought">
+              🧹 Svuota comprati
+            </button>
+            <button type="button" id="clear-all" class="btn btn-danger text-sm whitespace-nowrap" data-i18n="shopping.clearAll">
+              ❌ Svuota spesa
+            </button>
+          </div>
         </div>
+        
         <ul id="products-list" class="space-y-3"></ul>
       </section>
     </main>

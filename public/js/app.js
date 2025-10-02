@@ -96,9 +96,21 @@ function applyTranslations() {
 // Carica lingua salvata o di sistema
 export async function initLang() {
   const saved = localStorage.getItem("lang");
-  const browser = navigator.language.slice(0, 2); // "it", "fr", "en"
-  const lang = saved || (["it", "fr", "en"].includes(browser) ? browser : "en");
+  const browser = navigator.language.slice(0, 2); // "it", "fr", "en", "es"
+  const lang = saved || (["it", "fr", "en", "es"].includes(browser) ? browser : "en");
   await setLanguage(lang);
+
+  updateLanguageSelector(lang); // aggiorna selettore visuale
+}
+
+function updateLanguageSelector(lang) {
+  const langFlag = document.getElementById("lang-flag");
+  const langLabel = document.getElementById("lang-label");
+  
+  if (langFlag && langLabel) {
+    langFlag.src = `assets/flags/${lang}.svg`;
+    langLabel.textContent = lang.toUpperCase();
+  }
 }
 
 // Gestione switch lingua con menu a bandiere
@@ -129,8 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
       await setLanguage(lang);
 
       // aggiorna pulsante
-      langFlag.src = `assets/flags/${lang}.svg`;
-      langLabel.textContent = lang.toUpperCase();
+      updateLanguageSelector(lang);
       langMenu.classList.add("hidden");
     });
   });

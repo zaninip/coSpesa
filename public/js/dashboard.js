@@ -179,14 +179,6 @@ async function loadShoppingLists() {
         li.querySelector(".open").addEventListener("click", () =>
             (window.location.href = `shopping.html?id=${list.id}`),
         );
-        // li.querySelector(".code").addEventListener("click", () => {
-        // navigator.clipboard.writeText(list.code);
-        // showModal({
-        //     title: t("modals.copied"),
-        //     message: t("modals.copiedMessage").replace("{{code}}", list.code),
-        //     buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
-        // });
-        // });
         li.querySelector(".hide").addEventListener("click", async () => {
             await supabase
                 .from("shopping_participants")
@@ -197,5 +189,12 @@ async function loadShoppingLists() {
         });
         ul.appendChild(li);
     });
+
+    document.querySelectorAll("#shopping-list [data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        const text = t(key);
+        if (text) el.textContent = text;
+    });
+
     lucide.createIcons();
 }

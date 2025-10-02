@@ -1,6 +1,7 @@
 import { supabase, requireAuth, showModal, initMobileTooltips, initLang, setLanguage, t } from "./app.js";
 let user = null,
-shoppingId = null;
+shoppingId = null,
+shoppingCode = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
     await initLang(); // inizializza lingua
@@ -33,7 +34,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         navigator.clipboard.writeText(code);
         showModal({
             title: t("modals.copied"),
-            message: t("modals.copiedMessage").replace("{{code}}", list.code),
+            message: t("modals.copiedMessage").replace("{{code}}", shoppingCode),
             buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
         });
     });
@@ -67,6 +68,7 @@ async function loadShoppingInfo() {
     }
     document.getElementById("shopping-title").textContent = data.title;
     document.getElementById("shopping-code").textContent = data.code;
+    shoppingCode = data.code;
 }
 
 async function loadProducts() {
@@ -103,6 +105,13 @@ async function loadProducts() {
         // aggiunge il <li> alla lista
         ul.appendChild(li);
     });
+
+    document.querySelectorAll("#products-list [data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        const text = t(key);
+        if (text) el.textContent = text;
+    });
+
     lucide.createIcons();
 }
 
@@ -129,6 +138,13 @@ function appendProduct(p) {
     );
 
     ul.appendChild(li);
+
+    document.querySelectorAll("#products-list [data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        const text = t(key);
+        if (text) el.textContent = text;
+    });
+
     lucide.createIcons();
 }
 
