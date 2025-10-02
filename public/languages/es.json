@@ -1,0 +1,94 @@
+{
+  "login": {
+    "badge": "Conexión",
+    "title": "Bienvenido/a",
+    "subtitle": "Inicia sesión para gestionar y compartir tu compra.",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "button": "Iniciar sesión",
+    "noAccount": "¿No tienes una cuenta?",
+    "signupLink": "Regístrate"
+  },
+  "signup": {
+    "badge": "Registro",
+    "title": "Crear cuenta",
+    "subtitle": "Entra en CoSpesa y comparte tu lista.",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "button": "Registrarse",
+    "hasAccount": "¿Ya tienes una cuenta?",
+    "loginLink": "Iniciar sesión"
+  },
+  "dashboard": {
+    "badge": "Panel",
+    "newList": "Nueva compra",
+    "newListDesc": "Crea una lista y obtén un código para compartir",
+    "joinList": "Unirse con código",
+    "joinListDesc": "Accede a una compra existente",
+    "yourLists": "Tus compras",
+    "empty": "Ninguna compra creada o unida todavía",
+    "insertName": "Introduce el nombre de la compra a crear.",
+    "namePlaceholder": "Ej. Compra semanal",
+    "create": "Crear",
+    "cancel": "Cancelar",
+    "join": "Unirse",
+    "insertCode": "Introducir código de compra",
+    "insertCodeDesc": "Introduce el código único para unirte a la lista.",
+    "codePlaceholder": "Ej. ABC123",
+    "buttons": {
+      "open": "Abrir",
+      "code": "Código",
+      "delete": "Eliminar"
+    }
+  },
+  "shopping": {
+    "badge": "Lista",
+    "title": "Lista de la Compra",
+    "code": "Código",
+    "copy": "Copiar",
+    "addManual": "Añadir producto...",
+    "addButton": "Añadir",
+    "fromHistory": "O elige del historial:",
+    "clearBought": "🧹 Vaciar comprados",
+    "clearAll": "❌ Vaciar compra",
+    "products": "Productos",
+    "buttons": {
+      "buy": "Comprado",
+      "delete": "Eliminado"
+    }
+  },
+  "history": {
+    "badge": "Historial",
+    "title": "Historial de productos",
+    "subtitle": "Cuántas veces has comprado cada producto.",
+    "table": {
+      "product": "Producto",
+      "count": "Número de compras",
+      "last": "Fecha última compra"
+    },
+    "empty": "Ningún producto todavía."
+  },
+  "modals": {
+    "ok": "OK",
+    "cancel": "Cancelar",
+    "error": "Error",
+    "errorCreation": "Error de creación",
+    "errorCode": "Código no válido",
+    "errorJoin": "Error al unirse",
+    "errorLoad": "Imposible cargar la compra.",
+    "created": "Compra creada",
+    "copied": "Código copiado",
+    "copiedMessage": "El código de la compra <b>{{code}}</b> ha sido copiado al portapapeles.",
+    "confirm": "¿Estás seguro?",
+    "confirmDeleteAll": "⚠️ Estás a punto de eliminar TODOS los productos de la compra, incluso los no comprados.",
+    "yes": "Sí",
+    "no": "No",
+    "warning": "Atención",
+    "emptyTitle": "Introduce un nombre válido",
+    "code": "Código: {{code}}",
+    "validCode": "Introduce un código válido",
+    "backDashboard": "Volver al Panel",
+    "existingProduct": "Producto ya presente en la compra"
+  },
+  "logout": "Salir"
+}
