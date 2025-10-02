@@ -106,6 +106,32 @@ async function loadProducts() {
     lucide.createIcons();
 }
 
+function appendProduct(p) {
+    const ul = document.getElementById("products-list");
+    const tpl = document.getElementById("tpl-product");
+    const fragment = tpl.content.cloneNode(true);
+    const li = fragment.querySelector("li");
+
+    const nWrap = li.querySelector(".name");
+    nWrap.dataset.full = p.name;
+    nWrap.querySelector(".clip").textContent = p.name;
+
+    if (p.bought) {
+        li.querySelector(".name").classList.add("line-through", "text-gray-400");
+        li.querySelector(".buy").disabled = true;
+    }
+
+    li.querySelector(".buy").addEventListener("click", () =>
+        handleProductBought(p.id, li)
+    );
+    li.querySelector(".remove").addEventListener("click", () =>
+        handleProductRemoved(p.id, li)
+    );
+
+    ul.appendChild(li);
+    lucide.createIcons();
+}
+
 async function loadHistoryProducts() {
     const select = document.getElementById("history-select");
     select.innerHTML = `<option value="">— Seleziona prodotto —</option>`;
@@ -142,7 +168,16 @@ async function addManual() {
     }
     else {
         document.getElementById("new-product").value = "";
-        loadProducts();
+        // recupera l’ultimo prodotto inserito
+        const { data: inserted } = await supabase
+            .from("shopping_products")
+            .select("*")
+            .eq("shopping_id", shoppingId)
+            .order("created_at", { ascending: false })
+            .limit(1)
+            .single();
+
+        if (inserted) appendProduct(inserted);
     }
 }
 
@@ -165,7 +200,16 @@ async function addFromHistory() {
     }
     else {
         document.getElementById("history-select").value = "";
-        loadProducts();
+        // recupera l’ultimo prodotto inserito
+        const { data: inserted } = await supabase
+            .from("shopping_products")
+            .select("*")
+            .eq("shopping_id", shoppingId)
+            .order("created_at", { ascending: false })
+            .limit(1)
+            .single();
+
+        if (inserted) appendProduct(inserted);
     }
 }
 
