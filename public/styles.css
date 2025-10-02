@@ -217,7 +217,7 @@ header .container > div {
     padding: 4px 8px;
     font-size: 0.75rem; /* 12px */
     white-space: nowrap;
-    max-width: 100px;
+    max-width: 120px;
     overflow: hidden;
     text-overflow: ellipsis;
   }
