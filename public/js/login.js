@@ -1,8 +1,8 @@
-import { supabase, showModal, initLang } from "./app.js";
+import { supabase, showModal, initLang, renderHeader } from "./app.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-    lucide.createIcons();
-
+    renderHeader('login.badge');
+    
     await initLang(); // inizializza lingua
 
     document.getElementById("login").addEventListener("click", async () => {

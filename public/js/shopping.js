@@ -1,9 +1,20 @@
-import { supabase, requireAuth, showModal, initMobileTooltips, initLang, setLanguage, t } from "./app.js";
+import { supabase, requireAuth, showModal, showError, initMobileTooltips, initLang, setLanguage, translateElement, t, renderHeader } from "./app.js";
 let user = null,
 shoppingId = null,
 shoppingCode = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
+    renderHeader('shopping.badge', [
+        `<a href="dashboard.html" class="btn btn-secondary flex items-center gap-2">
+            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            <span class="hidden sm:inline" data-i18n="dashboard.badge">Dashboard</span>
+        </a>`,
+        `<button id="history" class="btn btn-secondary flex items-center gap-2">
+            <i data-lucide="bar-chart-2" class="w-5 h-5"></i>
+            <span class="hidden sm:inline" data-i18n="history.badge">Storico</span>
+        </button>`
+    ]);
+
     await initLang(); // inizializza lingua
     const langSel = document.getElementById("lang-switch");
     if (langSel) {
@@ -11,7 +22,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         langSel.addEventListener("change", (e) => setLanguage(e.target.value));
     }
     
-    lucide.createIcons();
     initMobileTooltips(); // attiva i tooltip su mobile
     user = await requireAuth();
 
@@ -84,11 +94,9 @@ async function loadProducts() {
         return;
     }
     const tpl = document.getElementById("tpl-product");
-    data.forEach((p) => {
-        // clona il contenuto del template
-        const fragment = tpl.content.cloneNode(true);
-        // recupera il vero <li> dal fragment
-        const li = fragment.querySelector("li");
+    data.forEach((p) => {        
+        const fragment = tpl.content.cloneNode(true); // clona il contenuto del template
+        const li = fragment.querySelector("li"); // recupera il vero <li> dal fragment
         const nWrap = li.querySelector(".name");
         nWrap.dataset.full = p.name;
         nWrap.querySelector(".clip").textContent = p.name;
@@ -102,16 +110,10 @@ async function loadProducts() {
         li.querySelector(".remove").addEventListener("click", () =>
         handleProductRemoved(p.id, li)
         );
-        // aggiunge il <li> alla lista
-        ul.appendChild(li);
+        ul.appendChild(li); // aggiunge il <li> alla lista
     });
 
-    document.querySelectorAll("#products-list [data-i18n]").forEach(el => {
-        const key = el.getAttribute("data-i18n");
-        const text = t(key);
-        if (text) el.textContent = text;
-    });
-
+    translateElement(ul);
     lucide.createIcons();
 }
 
@@ -138,13 +140,7 @@ function appendProduct(p) {
     );
 
     ul.appendChild(li);
-
-    document.querySelectorAll("#products-list [data-i18n]").forEach(el => {
-        const key = el.getAttribute("data-i18n");
-        const text = t(key);
-        if (text) el.textContent = text;
-    });
-
+    translateElement(li);
     lucide.createIcons();
 }
 
@@ -176,11 +172,7 @@ async function addManual() {
         if (msg.includes("ux_products_per_shopping_name_ci")) {
         msg = t("modals.existingProduct");
         }
-        showModal({
-        title: t("modals.error"),
-        message: msg,
-        buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
-        });
+        showError(msg);
     }
     else {
         document.getElementById("new-product").value = "";
@@ -208,11 +200,7 @@ async function addFromHistory() {
         if (msg.includes("ux_products_per_shopping_name_ci")) {
         msg = t("modals.existingProduct");
         }
-        showModal({
-        title: t("modals.error"),
-        message: msg,
-        buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
-        });
+        showError(msg);
     }
     else {
         document.getElementById("history-select").value = "";
@@ -236,11 +224,7 @@ async function handleProductBought(productId, liEl) {
     });
 
     if (error) {
-        showModal({
-            title: t("modals.error"),
-            message: error.message,
-            buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
-        });
+        showError(error.message);
     } else {
         // segna visivamente come comprato
         const nameEl = liEl.querySelector(".name");
@@ -261,20 +245,16 @@ async function handleProductRemoved(productId, liEl) {
         .eq("id", productId);
 
     if (error) {
-        showModal({
-            title: t("modals.error"),
-            message: error.message,
-            buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
-        });
+        showError(error.message);
     } else {
         // fade-out immediato e rimozione
         liEl.classList.add("fade-out");
         setTimeout(() => liEl.remove(), 500);
     }
-    }
+}
 
-    // Elimina solo i prodotti già comprati
-    async function clearBought() {
+// Elimina solo i prodotti già comprati
+async function clearBought() {
     const { error } = await supabase
         .from("shopping_products")
         .delete()
@@ -282,11 +262,7 @@ async function handleProductRemoved(productId, liEl) {
         .eq("bought", true);
 
     if (error) {
-        showModal({
-            title: t("modals.error"),
-            message: error.message,
-            buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
-        });
+        showError(error.message);
     } else {
         // Trova tutti i prodotti comprati e rimuovili con fade-out
         document.querySelectorAll("#products-list .li .name.line-through")
@@ -316,11 +292,7 @@ async function clearAllConfirmed() {
         .eq("shopping_id", shoppingId);
 
     if (error) {
-        showModal({
-        title: t("modals.error"),
-        message: error.message,
-        buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
-        });
+        showError(error.message);
     } else {
         // Rimuovi tutti i prodotti in lista con fade-out
         document.querySelectorAll("#products-list .li")

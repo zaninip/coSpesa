@@ -1,8 +1,15 @@
-import { supabase, requireAuth, initLang, setLanguage } from "./app.js";
+import { supabase, requireAuth, initLang, setLanguage, renderHeader } from "./app.js";
 let user = null;
 let shoppingId = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
+    renderHeader('history.badge', [
+        `<a id="back-to-shopping" href="shopping.html?id=${shoppingId}" class="btn btn-secondary flex items-center gap-2">
+            <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            <span class="hidden sm:inline" data-i18n="shopping.badge">Spesa</span>
+        </a>`
+    ]);
+
     await initLang(); // inizializza lingua
     const langSel = document.getElementById("lang-switch");
     if (langSel) {
@@ -10,7 +17,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         langSel.addEventListener("change", (e) => setLanguage(e.target.value));
     }
     
-    lucide.createIcons();
     user = await requireAuth();
 
     const params = new URLSearchParams(window.location.search);

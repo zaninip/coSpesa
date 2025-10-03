@@ -24,6 +24,22 @@ export function showModal({ title, message, buttons }) {
   modal.classList.add("show");
 }
 
+export function showError(message, titleKey = "modals.error") {
+  showModal({
+    title: t(titleKey),
+    message: message,
+    buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
+  });
+}
+
+export function showSuccess(title, message) {
+  showModal({
+    title: title,
+    message: message,
+    buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
+  });
+}
+
 const supabaseUrl = "https://rwfloolnybguuswbrwre.supabase.co";
 const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ3Zmxvb2xueWJndXVzd2Jyd3JlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc2Nzg4NDQsImV4cCI6MjA3MzI1NDg0NH0.fDqj7LeAPMEP9FjemFA_LE-K4xP6JkTw0rQsQ6OU-X8";
@@ -93,6 +109,16 @@ function applyTranslations() {
   });
 }
 
+// Traduci un elemento specifico (e i suoi figli)
+export function translateElement(container) {
+  const root = container || document;
+  root.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    const text = t(key);
+    if (text) el.textContent = text;
+  });
+}
+
 // Carica lingua salvata o di sistema
 export async function initLang() {
   const saved = localStorage.getItem("lang");
@@ -113,17 +139,75 @@ function updateLanguageSelector(lang) {
   }
 }
 
-// Gestione switch lingua con menu a bandiere
-document.addEventListener("DOMContentLoaded", () => {
+
+// HEADER COMPONENT
+export function renderHeader(badgeKey, buttons = []) {
+  const header = document.querySelector('header');
+  if (!header) return;
+  
+  // Determina se il logo deve essere cliccabile
+  const isAuthPage = badgeKey === 'login.badge' || badgeKey === 'signup.badge';
+  const logoHTML = isAuthPage 
+    ? `<img src="assets/logo.svg" class="h-8 sm:h-9" alt="CoSpesa" />`
+    : `<a href="dashboard.html"><img src="assets/logo.svg" class="h-8 sm:h-9" alt="CoSpesa" /></a>`;
+  
+  header.innerHTML = `
+    <div class="container flex items-center justify-between py-3">
+      <div class="flex items-center gap-3">
+        ${logoHTML}
+        <span class="badge" data-i18n="${badgeKey}">Badge</span>
+      </div>
+      <div class="flex items-center gap-2" id="header-buttons"></div>
+    </div>
+  `;
+  
+  // Aggiungi pulsanti personalizzati
+  const btnContainer = document.getElementById('header-buttons');
+  buttons.forEach(btn => {
+    btnContainer.insertAdjacentHTML('beforeend', btn);
+  });
+  
+  // Aggiungi sempre il language switcher alla fine
+  btnContainer.insertAdjacentHTML('beforeend', getLanguageSwitcherHTML());
+  
+  lucide.createIcons();
+  initLanguageMenu();
+}
+
+function getLanguageSwitcherHTML() {
+  return `
+    <div id="lang-switch" class="relative">
+      <button id="lang-btn" class="input flex items-center gap-2 px-2 py-1 cursor-pointer min-w-[70px] sm:min-w-[90px]">
+        <img id="lang-flag" src="assets/flags/it.svg" class="w-5 h-5" alt="IT">
+        <span id="lang-label" class="hidden sm:inline">IT</span>
+        <i data-lucide="chevron-down" class="w-4 h-4"></i>
+      </button>
+      <div id="lang-menu" class="absolute right-0 mt-2 hidden bg-[#0f0f0f] border border-[#2a2a2a] rounded-md shadow-lg z-50 min-w-[100px]">
+        <button data-lang="it" class="flex items-center gap-2 px-3 py-2 hover:bg-[#1a1a1a] w-full text-left">
+          <img src="assets/flags/it.svg" class="w-5 h-5" alt="IT"><span>IT</span>
+        </button>
+        <button data-lang="en" class="flex items-center gap-2 px-3 py-2 hover:bg-[#1a1a1a] w-full text-left">
+          <img src="assets/flags/en.svg" class="w-5 h-5" alt="EN"><span>EN</span>
+        </button>
+        <button data-lang="fr" class="flex items-center gap-2 px-3 py-2 hover:bg-[#1a1a1a] w-full text-left">
+          <img src="assets/flags/fr.svg" class="w-5 h-5" alt="FR"><span>FR</span>
+        </button>
+        <button data-lang="es" class="flex items-center gap-2 px-3 py-2 hover:bg-[#1a1a1a] w-full text-left">
+          <img src="assets/flags/es.svg" class="w-5 h-5" alt="ES"><span>ES</span>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+export function initLanguageMenu() {
   const langBtn = document.getElementById("lang-btn");
   const langMenu = document.getElementById("lang-menu");
-  const langFlag = document.getElementById("lang-flag");
-  const langLabel = document.getElementById("lang-label");
-
   if (!langBtn) return; // se la pagina non ha selettore
 
   // toggle menu
-  langBtn.addEventListener("click", () => {
+  langBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
     langMenu.classList.toggle("hidden");
   });
 
@@ -139,10 +223,8 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", async () => {
       const lang = btn.dataset.lang;
       await setLanguage(lang);
-
-      // aggiorna pulsante
       updateLanguageSelector(lang);
       langMenu.classList.add("hidden");
     });
   });
-});
+}

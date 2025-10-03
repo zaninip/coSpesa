@@ -1,7 +1,14 @@
-import { supabase, requireAuth, showModal, initMobileTooltips, initLang, setLanguage, t } from "./app.js";
+import { supabase, requireAuth, showModal, showError, showSuccess, initMobileTooltips, initLang, setLanguage, translateElement, t, renderHeader } from "./app.js";
 let user = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
+    renderHeader('dashboard.badge', [
+        `<button id="logout" class="btn btn-danger flex items-center gap-2">
+            <i data-lucide="log-out" class="w-5 h-5"></i>
+            <span class="hidden sm:inline" data-i18n="logout">Esci</span>
+        </button>`
+    ]);
+
     await initLang(); // inizializza lingua
     const langSel = document.getElementById("lang-switch");
     if (langSel) {
@@ -9,7 +16,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         langSel.addEventListener("change", (e) => setLanguage(e.target.value));
     }
 
-    lucide.createIcons();
     initMobileTooltips(); // attiva i tooltip su mobile
     user = await requireAuth();
     await loadShoppingLists();
@@ -29,10 +35,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         .getElementById("open-create-modal")
         .addEventListener("click", () => {
         createModal.classList.remove("hidden");
-        setTimeout(
-            () => createContent.classList.remove("scale-95", "opacity-0"),
-            10,
-        );
+        setTimeout(() => createContent.classList.remove("scale-95", "opacity-0"), 10);
         });
     document
         .getElementById("close-create")
@@ -51,10 +54,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         .getElementById("open-join-modal")
         .addEventListener("click", () => {
         joinModal.classList.remove("hidden");
-        setTimeout(
-            () => joinContent.classList.remove("scale-95", "opacity-0"),
-            10,
-        );
+        setTimeout(() => joinContent.classList.remove("scale-95", "opacity-0"), 10);
         });
     document
         .getElementById("close-join")
@@ -73,36 +73,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         .addEventListener("click", async () => {
         const title = document.getElementById("create-title").value.trim();
         if (!title) {
-            showModal({
-                title: t("modals.warning"),
-                message: t("modals.emptyTitle"),
-                buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
-            });
+            showError(t("modals.emptyTitle"), "modals.warning");
             return;
         }
-        const code = Math.random()
-            .toString(36)
-            .substring(2, 8)
-            .toUpperCase();
+
+        const code = Math.random().toString(36).substring(2, 8).toUpperCase();
         const { data, error } = await supabase
             .from("shopping_lists")
             .insert([{ title, code, owner_id: user.id }])
             .select()
             .single();            
         if (error) {
-            showModal({
-            title: t("modals.errorCreation"),
-            message: error.message,
-            buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
-            })};
+            showError(error.message, "modals.errorCreation");
+        }
         await supabase
             .from("shopping_participants")
             .insert([{ shopping_id: data.id, user_id: user.id }]);
-        showModal({
-            title: t("modals.created"),
-            message: t("modals.code").replace("{{code}}", data.code),
-            buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
-        });
+        showSuccess(t("modals.created"), t("modals.code").replace("{{code}}", data.code));
         closeCreate();
         loadShoppingLists();
     });
@@ -116,11 +103,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             .value.trim()
             .toUpperCase();
         if (!code) {
-            showModal({
-                title: t("modals.warning"),
-                message: t("modals.validCode"),
-                buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
-            });
+            showError(t("modals.validCode"), "modals.warning");
             return;
         }
         const { data: list, error } = await supabase
@@ -129,22 +112,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             .eq("code", code)
             .single();
         if (error || !list) {
-            showModal({
-                title: t("modals.error"),
-                message: t("modals.errorCode"),
-                buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
-            });
+            showError(t("modals.errorCode"));
             return;
         }
         const { error: jerr } = await supabase
             .from("shopping_participants")
             .insert([{ shopping_id: list.id, user_id: user.id }]);
         if (jerr && !String(jerr.message).includes("duplicate")) {
-            showModal({
-                title: t("modals.errorJoin"),
-                message: jerr.message,
-                buttons: [{ label: t("modals.ok"), class: "btn btn-primary" }]
-            });
+            showError(jerr.message, "modals.errorJoin");
             return;
         }
         closeJoin();
@@ -190,11 +165,6 @@ async function loadShoppingLists() {
         ul.appendChild(li);
     });
 
-    document.querySelectorAll("#shopping-list [data-i18n]").forEach(el => {
-        const key = el.getAttribute("data-i18n");
-        const text = t(key);
-        if (text) el.textContent = text;
-    });
-
+    translateElement(ul);
     lucide.createIcons();
 }
