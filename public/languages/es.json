@@ -71,6 +71,7 @@
   "modals": {
     "ok": "OK",
     "cancel": "Cancelar",
+    "delete": "Eliminar",
     "error": "Error",
     "errorCreation": "Error de creación",
     "errorCode": "Código no válido",
@@ -88,7 +89,9 @@
     "code": "Código: {{code}}",
     "validCode": "Introduce un código válido",
     "backDashboard": "Volver al Panel",
-    "existingProduct": "Producto ya presente en la compra"
+    "existingProduct": "Producto ya presente en la compra",
+    "confirmDelete": "Confirmar eliminación",
+    "confirmDeleteList": "¿Estás seguro de que quieres eliminar \"{{title}}\" de tu panel? Siempre podrás recuperarla introduciendo el código compartido."
   },
   "logout": "Salir"
 }

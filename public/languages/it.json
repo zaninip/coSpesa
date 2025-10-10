@@ -71,6 +71,7 @@
   "modals": {
     "ok": "OK",
     "cancel": "Annulla",
+    "delete": "Elimina",
     "error": "Errore",
     "errorCreation": "Errore creazione",
     "errorCode": "Codice non valido",
@@ -88,7 +89,9 @@
     "code": "Codice: {{code}}",
     "validCode": "Inserisci un codice valido",
     "backDashboard": "Torna alla Dashboard",
-    "existingProduct": "Prodotto già presente nella spesa"
+    "existingProduct": "Prodotto già presente nella spesa",
+    "confirmDelete": "Conferma eliminazione",
+    "confirmDeleteList": "Sei sicuro di voler rimuovere \"{{title}}\" dalla tua dashboard? Potrai sempre recuperarla inserendo il codice condiviso."
   },
   "logout": "Esci"
 }

@@ -71,6 +71,7 @@
   "modals": {
     "ok": "OK",
     "cancel": "Cancel",
+    "delete": "Delete",
     "error": "Error",
     "errorCreation": "Creation error",
     "errorCode": "Invalid code",
@@ -88,7 +89,9 @@
     "code": "Code: {{code}}",
     "validCode": "Please enter a valid code",
     "backDashboard": "Back to Dashboard",
-    "existingProduct": "Product already in the shopping list"
+    "existingProduct": "Product already in the shopping list",
+    "confirmDelete": "Confirm deletion",
+    "confirmDeleteList": "Are you sure you want to remove \"{{title}}\" from your dashboard? You can always recover it by entering the shared code."
   },
   "logout": "Logout"
 }

@@ -71,6 +71,7 @@
   "modals": {
     "ok": "OK",
     "cancel": "Annuler",
+    "delete": "Supprimer",
     "error": "Erreur",
     "errorCreation": "Erreur de création",
     "errorCode": "Code invalide",
@@ -88,7 +89,9 @@
     "code": "Code : {{code}}",
     "validCode": "Veuillez entrer un code valide",
     "backDashboard": "Retour au tableau de bord",
-    "existingProduct": "Produit déjà dans la liste"
+    "existingProduct": "Produit déjà dans la liste",
+    "confirmDelete": "Confirmer la suppression",
+    "confirmDeleteList": "Êtes-vous sûr de vouloir retirer \"{{title}}\" de votre tableau de bord ? Vous pourrez toujours le récupérer en saisissant le code partagé."
   },
   "logout": "Déconnexion"
 }

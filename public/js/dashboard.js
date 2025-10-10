@@ -148,23 +148,86 @@ async function loadShoppingLists() {
     data.forEach((row) => {
         const list = row.shopping_lists;
         const li = tpl.content.cloneNode(true);
+        
         const tWrap = li.querySelector(".title");
-        tWrap.dataset.full = list.title;                              // testo completo per tooltip
-        tWrap.querySelector(".clip").textContent = list.title;        // testo visibile troncato
-        li.querySelector(".open").addEventListener("click", () =>
-            (window.location.href = `shopping.html?id=${list.id}`),
-        );
-        li.querySelector(".hide").addEventListener("click", async () => {
-            await supabase
-                .from("shopping_participants")
-                .delete()
-                .eq("shopping_id", list.id)
-                .eq("user_id", user.id);
-            loadShoppingLists();
+        tWrap.dataset.full = list.title;
+        tWrap.querySelector(".clip").textContent = list.title;
+        
+        // Click sull'area principale per aprire
+        li.querySelector(".open-area").addEventListener("click", () => {
+            window.location.href = `shopping.html?id=${list.id}`;
         });
+        
+        // Click sul cestino per eliminare (con conferma)
+        li.querySelector(".delete-btn").addEventListener("click", (e) => {
+            e.stopPropagation(); // Previeni apertura quando clicchi sul cestino
+            
+            showModal({
+                title: t("modals.confirmDelete"),
+                message: t("modals.confirmDeleteList").replace("{{title}}", list.title),
+                buttons: [
+                    { label: t("modals.cancel"), class: "btn btn-secondary" },
+                    { 
+                        label: t("modals.delete"), 
+                        class: "btn btn-danger",
+                        onClick: async () => {
+                            await supabase
+                                .from("shopping_participants")
+                                .delete()
+                                .eq("shopping_id", list.id)
+                                .eq("user_id", user.id);
+                            loadShoppingLists();
+                        }
+                    }
+                ]
+            });
+        });
+        
         ul.appendChild(li);
     });
 
     translateElement(ul);
     lucide.createIcons();
 }
+
+// async function loadShoppingLists() {
+//     const ul = document.getElementById("shopping-list");
+//     ul.innerHTML = "";
+//     const { data, error } = await supabase
+//         .from("shopping_participants")
+//         .select("shopping_lists(id, title, code)")
+//         .eq("user_id", user.id);
+
+//     if (error) {
+//         ul.innerHTML = `<li class="muted">Errore caricamento.</li>`;
+//         return;
+//     }
+//     if (!data || !data.length) {
+//         ul.innerHTML = `<li class="muted" data-i18n="dashboard.empty">Nessuna spesa ancora creata o unita</li>`;
+//         return;
+//     }
+
+//     const tpl = document.getElementById("tpl-list-item");
+//     data.forEach((row) => {
+//         const list = row.shopping_lists;
+//         const li = tpl.content.cloneNode(true);
+//         const tWrap = li.querySelector(".title");
+//         tWrap.dataset.full = list.title;                              // testo completo per tooltip
+//         tWrap.querySelector(".clip").textContent = list.title;        // testo visibile troncato
+//         li.querySelector(".open").addEventListener("click", () =>
+//             (window.location.href = `shopping.html?id=${list.id}`),
+//         );
+//         li.querySelector(".hide").addEventListener("click", async () => {
+//             await supabase
+//                 .from("shopping_participants")
+//                 .delete()
+//                 .eq("shopping_id", list.id)
+//                 .eq("user_id", user.id);
+//             loadShoppingLists();
+//         });
+//         ul.appendChild(li);
+//     });
+
+//     translateElement(ul);
+//     lucide.createIcons();
+// }

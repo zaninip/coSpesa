@@ -102,8 +102,23 @@
     </div>
 
     <template id="tpl-list-item">
+      <li class="li flex items-center gap-3 cursor-pointer hover:bg-[#1a1a1a] transition-colors">
+        <!-- Area cliccabile per aprire (flex-1 = prende tutto lo spazio) -->
+        <div class="open-area flex items-center gap-3 min-w-0 flex-1">
+          <i data-lucide="shopping-bag" class="w-5 h-5 text-[var(--brand)] shrink-0"></i>
+          <span class="title has-tooltip flex-1 min-w-0" data-full="">
+            <span class="clip block truncate"></span>
+          </span>
+        </div>
+        <!-- Cestino a destra -->
+        <button type="button" class="delete-btn text-gray-400 hover:text-red-400 transition-colors p-2" aria-label="Elimina">
+          <i data-lucide="trash-2" class="w-5 h-5"></i>
+        </button>
+      </li>
+    </template>
+    
+    <!-- <template id="tpl-list-item">
       <li class="li flex items-center gap-3">
-        <!-- Colonna titolo (prende tutto lo spazio disponibile) -->
         <div class="flex items-center gap-3 min-w-0 flex-1">
           <i data-lucide="shopping-bag" class="w-5 h-5 text-[var(--brand)] shrink-0"></i>
           <span class="title has-tooltip flex-1 min-w-0" data-full="">
@@ -111,7 +126,6 @@
           </span>
         </div>
 
-        <!-- Colonna pulsanti (larghezza fissa = bordo sinistro allineato su tutte le righe) -->
         <div class="ml-auto w-30 sm:w-56 md:w-64 flex flex-col sm:flex-row justify-end gap-2">
           <button type="button" class="open btn btn-primary px-2 py-1 text-sm sm:px-3 sm:py-2 sm:text-base flex items-center gap-1" data-i18n="dashboard.buttons.open">
             <i data-lucide="arrow-right" class="w-4 h-4"></i> Apri
@@ -121,7 +135,7 @@
           </button>
         </div>
       </li>
-    </template>
+    </template> -->
 
     <script type="module" src="js/dashboard.js"></script>
 

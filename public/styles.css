@@ -83,6 +83,13 @@ body{
   padding:12px 14px;
 }
 
+/* Lista spese dashboard - larghezza limitata su desktop */
+@media (min-width: 768px) {
+  #shopping-list .li {
+    max-width: 50%;
+  }
+}
+
 /* Badge */
 .badge{
   display:inline-flex; align-items:center; gap:.4rem;
