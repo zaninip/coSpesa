@@ -272,3 +272,29 @@ header .container > div {
     gap: 0.25rem; /* 4px */
   }
 }
+
+/* Lista prodotti - larghezza limitata su desktop */
+@media (min-width: 768px) {
+  #products-list .li {
+    max-width: 50%;
+  }
+}
+
+/* Nome prodotto su max 2 righe con ellipsis */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+/* Stato comprato per i nuovi pulsanti icon */
+.li .buy:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.li .buy:disabled span {
+  filter: grayscale(1);
+}

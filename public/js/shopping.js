@@ -101,14 +101,15 @@ async function loadProducts() {
         nWrap.dataset.full = p.name;
         nWrap.querySelector(".clip").textContent = p.name;
         if (p.bought) {
-        li.querySelector(".name").classList.add("line-through", "text-gray-400");
-        li.querySelector(".buy").disabled = true;
+            li.querySelector(".name").classList.add("line-through", "text-gray-400");
+            li.querySelector(".buy").disabled = true;
+            li.querySelector(".buy").classList.add("opacity-50", "cursor-not-allowed");
         }
         li.querySelector(".buy").addEventListener("click", () =>
-        handleProductBought(p.id, li)
+            handleProductBought(p.id, li)
         );
         li.querySelector(".remove").addEventListener("click", () =>
-        handleProductRemoved(p.id, li)
+            handleProductRemoved(p.id, li)
         );
         ul.appendChild(li); // aggiunge il <li> alla lista
     });
@@ -130,15 +131,14 @@ function appendProduct(p) {
     if (p.bought) {
         li.querySelector(".name").classList.add("line-through", "text-gray-400");
         li.querySelector(".buy").disabled = true;
+        li.querySelector(".buy").classList.add("opacity-50", "cursor-not-allowed");
     }
-
     li.querySelector(".buy").addEventListener("click", () =>
         handleProductBought(p.id, li)
     );
     li.querySelector(".remove").addEventListener("click", () =>
         handleProductRemoved(p.id, li)
     );
-
     ul.appendChild(li);
     translateElement(li);
     lucide.createIcons();
@@ -231,7 +231,9 @@ async function handleProductBought(productId, liEl) {
         nameEl.classList.add("line-through", "text-gray-400");
 
         // disabilita il bottone "Comprato"
-        liEl.querySelector(".buy").disabled = true;
+        const buyBtn = liEl.querySelector(".buy");
+        buyBtn.disabled = true;
+        buyBtn.classList.add("opacity-50", "cursor-not-allowed");
 
         // aggiorna lo storico
         loadHistoryProducts();

@@ -76,21 +76,21 @@
 
     <template id="tpl-product">
       <li class="li flex items-center gap-3">
-        <!-- Colonna nome -->
+        <!-- Colonna nome (permette wrap su 2 righe) -->
         <div class="flex items-center gap-3 min-w-0 flex-1">
-          <i data-lucide="circle" class="w-4 h-4 text-[var(--brand)] shrink-0"></i>
+          <i data-lucide="circle" class="w-4 h-4 text-[var(--brand)] shrink-0 self-start mt-1"></i>
           <span class="name has-tooltip flex-1 min-w-0" data-full="">
-            <span class="clip block truncate"></span>
+            <span class="clip block line-clamp-2"></span>
           </span>
         </div>
 
-        <!-- Colonna pulsanti con larghezza fissa -->
-        <div class="ml-auto w-30 sm:w-56 md:w-64 flex flex-col sm:flex-row justify-end gap-2">
-          <button type="button" class="buy btn btn-primary px-2 py-1 text-sm sm:px-3 sm:py-2 sm:text-base flex items-center gap-1" data-i18n="shopping.buttons.buy">
-            <i data-lucide="check" class="w-4 h-4"></i> Comprato
+        <!-- Pulsanti icon-only sempre affiancati -->
+        <div class="flex items-center gap-2 shrink-0">
+          <button type="button" class="buy text-green-400 hover:text-green-300 transition-colors p-2" aria-label="Comprato" title="Comprato">
+            <span class="text-xl">✅</span>
           </button>
-          <button type="button" class="remove btn btn-danger px-2 py-1 text-sm sm:px-3 sm:py-2 sm:text-base flex items-center gap-1" data-i18n="shopping.buttons.delete">
-            <i data-lucide="x" class="w-4 h-4"></i> Eliminato
+          <button type="button" class="remove text-gray-400 hover:text-red-400 transition-colors p-2" aria-label="Elimina" title="Elimina">
+            <i data-lucide="trash-2" class="w-5 h-5"></i>
           </button>
         </div>
       </li>
