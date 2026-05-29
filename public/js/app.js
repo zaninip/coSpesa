@@ -40,9 +40,9 @@ export function showSuccess(title, message) {
   });
 }
 
-const supabaseUrl = "https://rwfloolnybguuswbrwre.supabase.co";
+const supabaseUrl = "https://ivfzswsljcoqvispfzsx.supabase.co";
 const supabaseKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ3Zmxvb2xueWJndXVzd2Jyd3JlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc2Nzg4NDQsImV4cCI6MjA3MzI1NDg0NH0.fDqj7LeAPMEP9FjemFA_LE-K4xP6JkTw0rQsQ6OU-X8";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2Znpzd3NsamNvcXZpc3BmenN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwNTA1NjUsImV4cCI6MjA5NTYyNjU2NX0.pqlo9s-z0aAJfsqgN4txJzU7mVR77909CxehVGxdpF0";
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
