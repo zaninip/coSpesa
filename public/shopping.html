@@ -76,15 +76,13 @@
 
     <template id="tpl-product">
       <li class="li flex items-center gap-3">
-        <!-- Colonna nome (permette wrap su 2 righe) -->
         <div class="flex items-center gap-3 min-w-0 flex-1">
           <i data-lucide="circle" class="w-4 h-4 text-[var(--brand)] shrink-0 self-start mt-1"></i>
-          <span class="name has-tooltip flex-1 min-w-0" data-full="">
+          <span class="name has-tooltip flex-1 min-w-0 cursor-pointer" data-full="">
             <span class="clip block line-clamp-2"></span>
+            <span class="indicators hidden gap-1 mt-0.5"></span>
           </span>
         </div>
-
-        <!-- Pulsanti icon-only sempre affiancati -->
         <div class="flex items-center gap-2 shrink-0">
           <button type="button" class="buy text-green-400 hover:text-green-300 transition-colors p-2" aria-label="Comprato" title="Comprato">
             <span class="text-xl">✅</span>
@@ -95,6 +93,34 @@
         </div>
       </li>
     </template>
+
+    <!-- Detail panel (bottom sheet mobile / modal desktop) -->
+    <div id="product-detail" class="detail-overlay">
+      <div id="detail-sheet" class="detail-sheet">
+        <div class="flex items-center justify-between mb-5">
+          <h3 id="detail-product-name" class="text-base font-bold flex-1 mr-3 truncate"></h3>
+          <button id="detail-close" class="text-[var(--muted)] hover:text-white transition-colors p-1 shrink-0">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <div id="detail-photo-area" class="detail-photo-area mb-4">
+          <img id="detail-photo-img" class="detail-photo-img hidden" alt="" />
+          <div id="detail-photo-placeholder" class="flex flex-col items-center gap-2 text-[var(--muted)] pointer-events-none">
+            <i data-lucide="camera" class="w-8 h-8"></i>
+            <span class="text-sm">Inserisci foto</span>
+          </div>
+        </div>
+        <input id="detail-photo-input" type="file" accept="image/*" class="hidden" />
+
+        <textarea id="detail-note" class="input w-full resize-none mb-4" rows="3" placeholder="Inserisci nota..."></textarea>
+
+        <div class="flex gap-3">
+          <button id="detail-cancel" class="btn btn-secondary flex-1">Annulla</button>
+          <button id="detail-save" class="btn btn-primary flex-1">Salva</button>
+        </div>
+      </div>
+    </div>
 
     <script type="module" src="js/shopping.js"></script>
 

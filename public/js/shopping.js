@@ -1,7 +1,9 @@
 import { supabase, requireAuth, showModal, showError, initMobileTooltips, initLang, setLanguage, translateElement, t, renderHeader } from "./app.js";
-let user = null,
-shoppingId = null,
-shoppingCode = null;
+let user = null, shoppingId = null, shoppingCode = null;
+
+let detailProductId = null;
+let pendingPhotoFile = null;
+const productsMap = new Map();
 
 document.addEventListener("DOMContentLoaded", async () => {
     renderHeader('shopping.badge', [
@@ -15,14 +17,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         </button>`
     ]);
 
-    await initLang(); // inizializza lingua
+    await initLang();
     const langSel = document.getElementById("lang-switch");
     if (langSel) {
         langSel.value = localStorage.getItem("lang") || "it";
         langSel.addEventListener("change", (e) => setLanguage(e.target.value));
     }
-    
-    initMobileTooltips(); // attiva i tooltip su mobile
+
+    initMobileTooltips();
     user = await requireAuth();
 
     const params = new URLSearchParams(window.location.search);
@@ -33,15 +35,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     await loadProducts();
     await loadHistoryProducts();
 
-    document
-        .getElementById("history")
-        .addEventListener(
+    document.getElementById("history").addEventListener(
         "click",
         () => (window.location.href = `history.html?id=${shoppingId}`),
-        );
+    );
     document.getElementById("copy-code").addEventListener("click", () => {
-        const code = document.getElementById("shopping-code").textContent;
-        navigator.clipboard.writeText(code);
+        navigator.clipboard.writeText(shoppingCode);
         showModal({
             title: t("modals.copied"),
             message: t("modals.copiedMessage").replace("{{code}}", shoppingCode),
@@ -49,18 +48,35 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     });
 
-    document
-        .getElementById("add-product")
-        .addEventListener("click", addManual);
-    document
-        .getElementById("add-from-history")
-        .addEventListener("click", addFromHistory);
+    document.getElementById("add-product").addEventListener("click", addManual);
+    document.getElementById("add-from-history").addEventListener("click", addFromHistory);
+    document.getElementById("clear-bought").addEventListener("click", clearBought);
+    document.getElementById("clear-all").addEventListener("click", clearAll);
 
-    document.getElementById("clear-bought")
-        .addEventListener("click", clearBought);
-    document.getElementById("clear-all")
-        .addEventListener("click", clearAll);
+    // Detail panel
+    document.getElementById("detail-close").addEventListener("click", closeDetailPanel);
+    document.getElementById("detail-cancel").addEventListener("click", closeDetailPanel);
+    document.getElementById("product-detail").addEventListener("click", (e) => {
+        if (e.target === document.getElementById("product-detail")) closeDetailPanel();
     });
+    document.getElementById("detail-photo-area").addEventListener("click", () => {
+        document.getElementById("detail-photo-input").click();
+    });
+    document.getElementById("detail-photo-input").addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        pendingPhotoFile = file;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            const img = document.getElementById("detail-photo-img");
+            img.src = ev.target.result;
+            img.classList.remove("hidden");
+            document.getElementById("detail-photo-placeholder").classList.add("hidden");
+        };
+        reader.readAsDataURL(file);
+    });
+    document.getElementById("detail-save").addEventListener("click", saveDetailPanel);
+});
 
 async function loadShoppingInfo() {
     const { data, error } = await supabase
@@ -72,7 +88,7 @@ async function loadShoppingInfo() {
         showModal({
             title: t("modals.error"),
             message: t("modals.errorLoad"),
-            buttons: [{label: t("modals.backDashboard"), class: "btn btn-primary", onClick: () => window.location.href = "dashboard.html"}]
+            buttons: [{ label: t("modals.backDashboard"), class: "btn btn-primary", onClick: () => window.location.href = "dashboard.html" }]
         });
         return;
     }
@@ -84,6 +100,7 @@ async function loadShoppingInfo() {
 async function loadProducts() {
     const ul = document.getElementById("products-list");
     ul.innerHTML = "";
+    productsMap.clear();
     const { data, error } = await supabase
         .from("shopping_products")
         .select("*")
@@ -93,56 +110,142 @@ async function loadProducts() {
         ul.innerHTML = `<li class="muted">Errore</li>`;
         return;
     }
-    const tpl = document.getElementById("tpl-product");
-    data.forEach((p) => {        
-        const fragment = tpl.content.cloneNode(true); // clona il contenuto del template
-        const li = fragment.querySelector("li"); // recupera il vero <li> dal fragment
-        const nWrap = li.querySelector(".name");
-        nWrap.dataset.full = p.name;
-        nWrap.querySelector(".clip").textContent = p.name;
-        if (p.bought) {
-            li.querySelector(".name").classList.add("line-through", "text-gray-400");
-            li.querySelector(".buy").disabled = true;
-            li.querySelector(".buy").classList.add("opacity-50", "cursor-not-allowed");
-        }
-        li.querySelector(".buy").addEventListener("click", () =>
-            handleProductBought(p.id, li)
-        );
-        li.querySelector(".remove").addEventListener("click", () =>
-            handleProductRemoved(p.id, li)
-        );
-        ul.appendChild(li); // aggiunge il <li> alla lista
-    });
-
+    data.forEach((p) => ul.appendChild(buildProductLi(p)));
     translateElement(ul);
     lucide.createIcons();
 }
 
-function appendProduct(p) {
-    const ul = document.getElementById("products-list");
+function buildProductLi(p) {
     const tpl = document.getElementById("tpl-product");
     const fragment = tpl.content.cloneNode(true);
     const li = fragment.querySelector("li");
+    li.dataset.productId = p.id;
 
     const nWrap = li.querySelector(".name");
     nWrap.dataset.full = p.name;
     nWrap.querySelector(".clip").textContent = p.name;
 
     if (p.bought) {
-        li.querySelector(".name").classList.add("line-through", "text-gray-400");
+        nWrap.classList.add("line-through", "text-gray-400");
         li.querySelector(".buy").disabled = true;
         li.querySelector(".buy").classList.add("opacity-50", "cursor-not-allowed");
     }
-    li.querySelector(".buy").addEventListener("click", () =>
-        handleProductBought(p.id, li)
-    );
-    li.querySelector(".remove").addEventListener("click", () =>
-        handleProductRemoved(p.id, li)
-    );
+
+    updateProductIndicators(p.id, p, li);
+
+    nWrap.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openDetailPanel(p.id);
+    });
+
+    li.querySelector(".buy").addEventListener("click", () => handleProductBought(p.id, li));
+    li.querySelector(".remove").addEventListener("click", () => handleProductRemoved(p.id, li));
+
+    productsMap.set(p.id, { ...p });
+    return li;
+}
+
+function updateProductIndicators(productId, product, liEl) {
+    const p = product ?? productsMap.get(productId);
+    if (!p) return;
+    const li = liEl || document.querySelector(`[data-product-id="${productId}"]`);
+    if (!li) return;
+    const indicators = li.querySelector(".indicators");
+    if (!indicators) return;
+
+    indicators.innerHTML = "";
+    if (p.photo_url) indicators.innerHTML += `<i data-lucide="camera" class="w-3 h-3 text-[var(--brand)]"></i>`;
+    if (p.note)      indicators.innerHTML += `<i data-lucide="file-text" class="w-3 h-3 text-[var(--brand)]"></i>`;
+
+    const hasContent = !!(p.photo_url || p.note);
+    indicators.classList.toggle("hidden", !hasContent);
+    indicators.classList.toggle("flex", hasContent);
+    if (hasContent) lucide.createIcons();
+}
+
+function appendProduct(p) {
+    const ul = document.getElementById("products-list");
+    const li = buildProductLi(p);
     ul.appendChild(li);
     translateElement(li);
     lucide.createIcons();
 }
+
+// ── Detail panel ──────────────────────────────────────────
+
+function openDetailPanel(productId) {
+    const product = productsMap.get(productId);
+    if (!product) return;
+    detailProductId = productId;
+    pendingPhotoFile = null;
+
+    document.getElementById("detail-product-name").textContent = product.name;
+    document.getElementById("detail-note").value = product.note || "";
+    document.getElementById("detail-photo-input").value = "";
+
+    const img = document.getElementById("detail-photo-img");
+    const placeholder = document.getElementById("detail-photo-placeholder");
+    if (product.photo_url) {
+        img.src = product.photo_url;
+        img.classList.remove("hidden");
+        placeholder.classList.add("hidden");
+    } else {
+        img.src = "";
+        img.classList.add("hidden");
+        placeholder.classList.remove("hidden");
+    }
+
+    document.getElementById("product-detail").classList.add("show");
+    lucide.createIcons();
+}
+
+function closeDetailPanel() {
+    document.getElementById("product-detail").classList.remove("show");
+    pendingPhotoFile = null;
+}
+
+async function saveDetailPanel() {
+    const saveBtn = document.getElementById("detail-save");
+    saveBtn.disabled = true;
+
+    const note = document.getElementById("detail-note").value.trim() || null;
+    const product = productsMap.get(detailProductId);
+    let photo_url = product?.photo_url || null;
+
+    if (pendingPhotoFile) {
+        const path = `${shoppingId}/${detailProductId}`;
+        const { error: uploadError } = await supabase.storage
+            .from("product-photos")
+            .upload(path, pendingPhotoFile, { upsert: true, contentType: pendingPhotoFile.type });
+        if (uploadError) {
+            showError(uploadError.message);
+            saveBtn.disabled = false;
+            return;
+        }
+        photo_url = supabase.storage.from("product-photos").getPublicUrl(path).data.publicUrl;
+    }
+
+    const { error } = await supabase
+        .from("shopping_products")
+        .update({ note, photo_url })
+        .eq("id", detailProductId);
+    if (error) {
+        showError(error.message);
+        saveBtn.disabled = false;
+        return;
+    }
+
+    if (product) {
+        product.note = note;
+        product.photo_url = photo_url;
+        updateProductIndicators(detailProductId);
+    }
+
+    saveBtn.disabled = false;
+    closeDetailPanel();
+}
+
+// ── Products ──────────────────────────────────────────────
 
 async function loadHistoryProducts() {
     const select = document.getElementById("history-select");
@@ -169,14 +272,10 @@ async function addManual() {
         .insert([{ shopping_id: shoppingId, name }]);
     if (error) {
         let msg = error.message;
-        if (msg.includes("ux_products_per_shopping_name_ci")) {
-        msg = t("modals.existingProduct");
-        }
+        if (msg.includes("ux_products_per_shopping_name_ci")) msg = t("modals.existingProduct");
         showError(msg);
-    }
-    else {
+    } else {
         document.getElementById("new-product").value = "";
-        // recupera l’ultimo prodotto inserito
         const { data: inserted } = await supabase
             .from("shopping_products")
             .select("*")
@@ -184,7 +283,6 @@ async function addManual() {
             .order("created_at", { ascending: false })
             .limit(1)
             .single();
-
         if (inserted) appendProduct(inserted);
     }
 }
@@ -192,19 +290,24 @@ async function addManual() {
 async function addFromHistory() {
     const name = document.getElementById("history-select").value;
     if (!name) return;
+
+    const { data: histData } = await supabase
+        .from("products_history")
+        .select("last_photo_url")
+        .eq("shopping_id", shoppingId)
+        .eq("name", name)
+        .single();
+    const photo_url = histData?.last_photo_url || null;
+
     const { error } = await supabase
         .from("shopping_products")
-        .insert([{ shopping_id: shoppingId, name }]);
+        .insert([{ shopping_id: shoppingId, name, photo_url }]);
     if (error) {
         let msg = error.message;
-        if (msg.includes("ux_products_per_shopping_name_ci")) {
-        msg = t("modals.existingProduct");
-        }
+        if (msg.includes("ux_products_per_shopping_name_ci")) msg = t("modals.existingProduct");
         showError(msg);
-    }
-    else {
+    } else {
         document.getElementById("history-select").value = "";
-        // recupera l’ultimo prodotto inserito
         const { data: inserted } = await supabase
             .from("shopping_products")
             .select("*")
@@ -212,7 +315,6 @@ async function addFromHistory() {
             .order("created_at", { ascending: false })
             .limit(1)
             .single();
-
         if (inserted) appendProduct(inserted);
     }
 }
@@ -222,20 +324,14 @@ async function handleProductBought(productId, liEl) {
         pid: productId,
         sid: shoppingId,
     });
-
     if (error) {
         showError(error.message);
     } else {
-        // segna visivamente come comprato
         const nameEl = liEl.querySelector(".name");
         nameEl.classList.add("line-through", "text-gray-400");
-
-        // disabilita il bottone "Comprato"
         const buyBtn = liEl.querySelector(".buy");
         buyBtn.disabled = true;
         buyBtn.classList.add("opacity-50", "cursor-not-allowed");
-
-        // aggiorna lo storico
         loadHistoryProducts();
     }
 }
@@ -245,44 +341,43 @@ async function handleProductRemoved(productId, liEl) {
         .from("shopping_products")
         .delete()
         .eq("id", productId);
-
     if (error) {
         showError(error.message);
     } else {
-        // fade-out immediato e rimozione
+        if (detailProductId === productId) closeDetailPanel();
+        productsMap.delete(productId);
         liEl.classList.add("fade-out");
         setTimeout(() => liEl.remove(), 500);
     }
 }
 
-// Elimina solo i prodotti già comprati
 async function clearBought() {
     const { error } = await supabase
         .from("shopping_products")
         .delete()
         .eq("shopping_id", shoppingId)
         .eq("bought", true);
-
     if (error) {
         showError(error.message);
     } else {
-        // Trova tutti i prodotti comprati e rimuovili con fade-out
         document.querySelectorAll("#products-list .li .name.line-through")
             .forEach(nameEl => {
-            const li = nameEl.closest(".li");
-            if (li) removeWithAnimation(li, "all");
-        });
+                const li = nameEl.closest(".li");
+                if (!li) return;
+                const pid = li.dataset.productId;
+                if (pid) productsMap.delete(pid);
+                removeWithAnimation(li, "all");
+            });
     }
 }
 
-// Elimina TUTTI i prodotti (con conferma)
 function clearAll() {
     showModal({
         title: t("modals.confirm"),
         message: t("modals.confirmDeleteAll"),
         buttons: [
-        { label: t("modals.no"), class: "btn btn-secondary" },
-        { label: t("modals.ok"), class: "btn btn-danger", onClick: clearAllConfirmed }
+            { label: t("modals.no"), class: "btn btn-secondary" },
+            { label: t("modals.ok"), class: "btn btn-danger", onClick: clearAllConfirmed }
         ]
     });
 }
@@ -292,21 +387,17 @@ async function clearAllConfirmed() {
         .from("shopping_products")
         .delete()
         .eq("shopping_id", shoppingId);
-
     if (error) {
         showError(error.message);
     } else {
-        // Rimuovi tutti i prodotti in lista con fade-out
+        closeDetailPanel();
+        productsMap.clear();
         document.querySelectorAll("#products-list .li")
             .forEach(li => removeWithAnimation(li, "all"));
     }
 }
 
 function removeWithAnimation(li, type = "single") {
-  if (type === "all") {
-    li.classList.add("fade-out-up");
-  } else {
-    li.classList.add("fade-out");
-  }
-  setTimeout(() => li.remove(), 500); // 500ms come da CSS
+    li.classList.add(type === "all" ? "fade-out-up" : "fade-out");
+    setTimeout(() => li.remove(), 500);
 }
